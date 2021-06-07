@@ -121,6 +121,31 @@ app.put("/merch/purchase", (req, res) => {
   });
 });
 
+//delete merch from the collection by id
+app.delete("/merch/delete", async (req, res) => {
+  const { merch_id } = req.body;
+  db.collection("merch").doc(merch_id).delete();
+
+  let merchList = [];
+  db.collection("merch").get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      merchList.push({
+        id: doc.id,
+        title: doc.data().title,
+        price: doc.data().price,
+        description: doc.data().description,
+        images: doc.data().images,
+        stock: doc.data().stock
+      });
+    });
+    res.send(merchList)
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+  });
+});
+
 
 app.listen(PORT, () => {
   console.log("Listening");
