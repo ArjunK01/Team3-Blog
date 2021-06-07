@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import firebase from "../firebase";
 import axios from "axios";
+import Loading from "../components/Loading";
 
 const AuthContext = createContext();
 
@@ -31,7 +32,7 @@ const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  if (loading) return <p>Loading</p>;
+  if (loading) return <Loading />;
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
