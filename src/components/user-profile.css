@@ -1,0 +1,82 @@
+.container {
+  padding: 20px;
+}
+
+.reset-padding {
+  padding: 0;
+  margin: 0;
+}
+
+.field-title {
+  color: grey;
+  /* padding-right: 1rem; */
+  width: 100px;
+  color: #315488;
+  font-weight: bold;
+}
+
+.top-section {
+  display: flex;
+  flex-direction: row;
+  /* CHANGE THIS TO "CENTER" TO PLACE TOP INFO CARD IN THE CENTER */
+  justify-content: left;
+  align-items: center;
+  /* padding-bottom: 20px; */
+  background: #fff;
+  color: white;
+}
+.name,
+.birthday,
+.location,
+.about {
+  display: flex;
+  flex-direction: row;
+  color: black;
+}
+
+.pfp-container {
+  padding: 10px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pfp {
+}
+
+.personal-info {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+  font-size: 3rem; */
+}
+
+.bottom-section {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around;
+  align-items: flex-start; */
+}
+
+.blog-posts-container,
+.forum-posts-container {
+  width: 50%;
+  padding: 20px;
+  /* margin: 10px; */
+  /* background: rgb(221, 221, 221); */
+}
+
+.subheader {
+  /* background: rgb(221, 221, 221); */
+  color: #315488;
+}
+
+.blog-post,
+.forum-post {
+  padding: 10px;
+  border: 1px solid #fff;
+  background: lightgrey;
+}
