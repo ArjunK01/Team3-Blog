@@ -10,11 +10,6 @@ function App() {
       <ContextWrapper>
         <Navigation />
       </ContextWrapper>
-      <Router>
-        <Switch>
-          <Route path="/" component={Home} />
-        </Switch>
-      </Router>
     </div>
   );
 }

@@ -4,3 +4,9 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
+.appContainer {
+  max-width: 1260px;
+  margin: 0px auto;
+  padding: 0px 12px;
+}
