@@ -32,7 +32,7 @@
 }
 
 .authSubmitBtn {
-  background-color: var(--light-blue);
+  background-color: var(--dark-blue);
   color: white;
   display: flex;
   justify-content: center;
@@ -46,7 +46,8 @@
 }
 
 .authSubmitBtn:hover {
-  background-color: var(--dark-blue);
+  background-color: var(--light-blue);
+
   color: white;
 }
 

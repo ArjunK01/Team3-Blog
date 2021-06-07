@@ -36,7 +36,7 @@ const NavBar = () => {
               />
             </svg>
           </div>
-          <div className="loginLink">
+          <div className="loginLink" onClick={() => history.push("/login")}>
             <Link className="loginLinkText" to="/login">
               Login
             </Link>
