@@ -57,7 +57,7 @@ app.get("/merch/get", (req, res) => {
 });
 
 //update merch item
-//
+//returns updated info for that specific item
 app.put("/merch/edit", async (req, res) => {
   const {
     merch_id,
