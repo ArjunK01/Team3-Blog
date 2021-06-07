@@ -57,7 +57,7 @@ app.get("/merch/get", (req, res) => {
 });
 
 //update merch item
-app.put("/student/directory/edit", async (req, res) => {
+app.put("/merch/edit", async (req, res) => {
   const {
     merch_id,
     title,
@@ -67,7 +67,7 @@ app.put("/student/directory/edit", async (req, res) => {
     stock,
   } = req.body;
 
-  const resp = await db.collection("merch").doc(merch_id).update({
+  await db.collection("merch").doc(merch_id).update({
     title,
     images,
     description,
@@ -75,7 +75,7 @@ app.put("/student/directory/edit", async (req, res) => {
     stock,
   });
 
-  db.collection("merch").doc(merch_id).get()
+  db.collection("merch").get()
   .then((doc) => {
     if (doc.exists) {
       res.send({ id: doc.id, ...doc.data()});
@@ -125,6 +125,45 @@ app.put("/merch/purchase", (req, res) => {
 app.delete("/merch/delete", async (req, res) => {
   const { merch_id } = req.body;
   db.collection("merch").doc(merch_id).delete();
+
+  let merchList = [];
+  db.collection("merch").get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      merchList.push({
+        id: doc.id,
+        title: doc.data().title,
+        price: doc.data().price,
+        description: doc.data().description,
+        images: doc.data().images,
+        stock: doc.data().stock
+      });
+    });
+    res.send(merchList)
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+  });
+});
+
+//create merch
+//returns all merch items
+app.post("/merch/create", async (req, res) => {
+  const {
+    title,
+    images,
+    description,
+    price,
+    stock,
+  } = req.body;
+
+  await db.collection("merch").add({
+    title,
+    images,
+    description,
+    price,
+    stock,
+  });
 
   let merchList = [];
   db.collection("merch").get()
