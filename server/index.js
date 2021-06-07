@@ -202,7 +202,42 @@ app.delete("/user/delete", async (req, res) => {
   res.sendStatus(200);
 });
 
+//create user
+//sends status 200
+app.post("/user/create", async (req, res) => {
+  const {
+    name,
+    handle,
+    email,
+    birthday,
+  } = req.body;
 
+  const [
+    isAdmin,
+    likedBlogPosts,
+    blogComments,
+    forumPosts,
+    forumLikes,
+    forumComments,
+    purchasedMerch,
+  ] = [false, [], [], [], [], [], []]
+
+  await db.collection("user").add({
+    name,
+    handle,
+    email,
+    birthday,
+    isAdmin,
+    likedBlogPosts,
+    blogComments,
+    forumPosts,
+    forumLikes,
+    forumComments,
+    purchasedMerch,
+  });
+
+  sendStatus(200);
+});
 
 app.listen(PORT, () => {
   console.log("Listening");
