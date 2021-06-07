@@ -1,0 +1,93 @@
+.authContainer {
+  display: flex;
+  margin-top: 64px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.authFormContainer {
+  min-width: 350px;
+  padding: 32px 32px;
+  background-color: var(--light-gray);
+}
+
+.loginHeroContainer {
+  flex-grow: 1;
+  overflow: hidden;
+  height: 500px;
+}
+
+.loginHeroContainer img {
+  width: 100%;
+  height: 500px;
+}
+.loginSwitchBtn {
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.authSubmitBtn {
+  background-color: var(--light-blue);
+  color: white;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 16px;
+}
+
+.authSubmitBtn:hover {
+  background-color: var(--dark-blue);
+  color: white;
+}
+
+.logInHeader {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  letter-spacing: 0.8px;
+}
+
+.nameInput {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nameInput > * {
+  width: 48%;
+}
+
+.authInput {
+  margin: 0;
+}
+
+.statusInput {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statusInput > * {
+  width: 48%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 5px 0px;
+  border-radius: 3px;
+
+  color: white;
+}
+
+.errorMessage {
+  font-size: 14px;
+  margin-bottom: 0;
+}

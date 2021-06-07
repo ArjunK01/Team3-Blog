@@ -1,0 +1,18 @@
+:root {
+  --dark-blue: #1d4270;
+  --light-blue: #78b0f5;
+  --light-gray: #f3f4f6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.appContainer {
+  max-width: 1260px;
+  margin: 0px auto;
+  padding: 0px 12px;
+}
