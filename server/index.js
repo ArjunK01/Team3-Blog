@@ -193,6 +193,17 @@ app.post("/merch/create", async (req, res) => {
 });
 
 
+
+//delete user
+//sends status 200
+app.delete("/user/delete", async (req, res) => {
+  const { user_id } = req.body;
+  db.collection("user").doc(user_id).delete();
+  res.sendStatus(200);
+});
+
+
+
 app.listen(PORT, () => {
   console.log("Listening");
 });
