@@ -1,5 +1,5 @@
 .navContainer {
-  background-color: #1d4270;
+  background-color: var(--dark-blue);
 }
 
 .navWidth {
@@ -33,7 +33,7 @@
 }
 
 .links > *:hover {
-  color: #78b0f5;
+  color: var(--light-blue);
 }
 
 .cartIcon {
@@ -43,7 +43,7 @@
   margin-right: 32px;
 }
 .cartIcon:hover {
-  color: #78b0f5;
+  color: var(--light-blue);
   cursor: pointer;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .loginLink {
-  background-color: #78b0f5;
+  background-color: var(--light-blue);
   padding: 0px 20px;
   border-radius: 2px;
   display: flex;
@@ -75,5 +75,5 @@
 }
 
 .loginLink:hover .loginLinkText {
-  color: #1d4270;
+  color: var(--dark-blue);
 }
