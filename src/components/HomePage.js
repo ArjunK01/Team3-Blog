@@ -1,24 +1,24 @@
-import banner from "./banner.jpg";
+import banner from "../images/homeBanner.png";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-    backgroundColor: "",
-  },
-});
+import "../App.css";
 
 const HomePage = () => {
-  const classes = useStyles();
+  const windowWidth = window.innerWidth;
   return (
     <div>
-      <div style={{ float: "center" }}>
+      <div style={{ float: "center", color: "black" }}>
         <img
           src={banner}
           alt="City Street"
-          style={{ width: "100%", marginLeft: 0, marginRight: 0 }}
+          style={{
+            position: "absolute",
+            width: windowWidth + 1,
+            left: 0,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         ></img>
       </div>
     </div>
