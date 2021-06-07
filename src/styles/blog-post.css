@@ -1,0 +1,39 @@
+.post-container {
+  padding: 10px;
+  margin: 10px 0px;
+  background: #e0e0e2;
+  border: 2px solid #fff;
+  /* width: 40%; */
+}
+
+.post-container:hover {
+  background: white;
+  transition: all 0.5 ease;
+}
+
+.blog-top-section {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 1vh;
+}
+
+.bottom-section {
+  /* display: flex;
+  flex-direction: row; */
+  justify-content: space-between;
+}
+
+.read-more,
+.likes-and-comments {
+  display: flex;
+  flex-direction: row;
+  /* width: 50%; */
+}
+
+/* .read-more {
+  justify-content: flex-start;
+}
+
+.likes-and-comments {
+  justify-content: flex-end;
+} */

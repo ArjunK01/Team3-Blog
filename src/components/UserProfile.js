@@ -1,11 +1,12 @@
 import React from "react";
-import "./user-profile.css";
+import "../styles/user-profile.css";
+import BlogPost from "./BlogPost";
 import FaceIcon from "@material-ui/icons/Face";
 
 const UserProfile = () => {
   return (
     <div className="container">
-      <div className="top-section">
+      <div className="user-top-section">
         <div className="pfp-container">
           <FaceIcon style={{ color: "grey", fontSize: "10rem" }} />
           {/* <div className="handle pfp-container">
@@ -36,7 +37,7 @@ const UserProfile = () => {
           </div>
           {/* ABOUT FIELD */}
           <div className="about">
-            <p className="reset-padding field-title">About</p>
+            <p className="reset-padding field-title">ABOUT</p>
             <p className="reset-padding">I am a sample user</p>
           </div>
         </div>
@@ -46,21 +47,24 @@ const UserProfile = () => {
         <div className="blog-posts-container">
           <div className="subheader">
             <h2>Blog posts</h2>
+            <hr />
           </div>
           <div className="blog-content">
-            <p className="blog-post">example item</p>
-            <p className="blog-post">example item</p>
-            <p className="blog-post">example item</p>
+            {/* <p className="blog-post">example item</p> */}
+            <BlogPost />
+            <BlogPost />
+            <BlogPost />
           </div>
         </div>
         <div className="forum-posts-container">
           <div className="subheader">
             <h2>Forum posts</h2>
+            <hr />
           </div>
           <div className="forum-content">
-            <p className="forum-post">example item</p>
-            <p className="forum-post">example item</p>
-            <p className="forum-post">example item</p>
+            {/* <p className="forum-post">example item</p> */}
+            <BlogPost />
+            <BlogPost />
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@
   font-weight: bold;
 }
 
-.top-section {
+.user-top-section {
   display: flex;
   flex-direction: row;
   /* CHANGE THIS TO "CENTER" TO PLACE TOP INFO CARD IN THE CENTER */
