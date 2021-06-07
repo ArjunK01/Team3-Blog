@@ -1,0 +1,79 @@
+.navContainer {
+  background-color: #1d4270;
+}
+
+.navWidth {
+  max-width: 1260px;
+  display: flex;
+
+  justify-content: space-between;
+  margin: 0px auto;
+  color: white;
+  font-size: 20px;
+  padding: 16px 12px;
+}
+
+.navCenter {
+  position: absolute;
+  left: 50%;
+  margin-top: -2px;
+}
+
+.navCenterLogo {
+  position: relative;
+  left: -50%;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.links > * {
+  margin-right: 18px;
+  text-decoration: none;
+  color: white;
+}
+
+.links > *:hover {
+  color: #78b0f5;
+}
+
+.cartIcon {
+  color: white;
+  width: 34px;
+  height: 34px;
+  margin-right: 32px;
+}
+.cartIcon:hover {
+  color: #78b0f5;
+  cursor: pointer;
+}
+
+.navRight {
+  display: flex;
+}
+
+.loginLink {
+  background-color: #78b0f5;
+  padding: 0px 20px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loginLinkText {
+  text-decoration: none;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.loginLink:hover {
+  background-color: white;
+  cursor: pointer;
+  color: black;
+}
+
+.loginLink:hover .loginLinkText {
+  color: #1d4270;
+}
