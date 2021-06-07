@@ -57,6 +57,7 @@ app.get("/merch/get", (req, res) => {
 });
 
 //update merch item
+//
 app.put("/merch/edit", async (req, res) => {
   const {
     merch_id,
@@ -75,7 +76,7 @@ app.put("/merch/edit", async (req, res) => {
     stock,
   });
 
-  db.collection("merch").get()
+  db.collection("merch").doc(merch_id).get()
   .then((doc) => {
     if (doc.exists) {
       res.send({ id: doc.id, ...doc.data()});
@@ -91,6 +92,7 @@ app.put("/merch/edit", async (req, res) => {
 });
 
 //decrease stock by 1 based off item purchased
+//return status (no info about merch items)
 app.put("/merch/purchase", (req, res) => {
   const { merch_id } = req.body;
   let curr_stock = 0;
@@ -122,6 +124,7 @@ app.put("/merch/purchase", (req, res) => {
 });
 
 //delete merch from the collection by id
+//returns all remaining merch
 app.delete("/merch/delete", async (req, res) => {
   const { merch_id } = req.body;
   db.collection("merch").doc(merch_id).delete();
