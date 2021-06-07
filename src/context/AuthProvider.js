@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import firebase from "../firebase";
 import axios from "axios";
-import Loading from "../components/Loading";
 
 const AuthContext = createContext();
 
@@ -15,7 +14,6 @@ const AuthProvider = ({ children }) => {
     firebase.auth().onAuthStateChanged(firebaseUser => {
       setLoading(true);
       if (firebaseUser) {
-        console.log("HERE", firebaseUser.uid);
         setTimeout(
           () =>
             axios
