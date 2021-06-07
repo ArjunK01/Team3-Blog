@@ -53,4 +53,36 @@ router.post("/create", async (req, res) => {
   sendStatus(200);
 });
 
+//get user by id
+router.put("/edit", async (req, res) => {
+  const {
+    user_id,
+    name,
+    handle,
+    email,
+    birthday,
+  } = req.body;
+
+  await db.collection("user").doc(user_id).update({
+    name,
+    handle,
+    email,
+    birthday,
+  });
+
+  db.collection("user").doc(user_id).get()
+  .then((doc) => {
+    if (doc.exists) {
+      res.send({ id: doc.id, ...doc.data()});
+    }
+    else {
+      res.sendStatus(404);
+    }
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+  });
+
+})
+
 module.exports = router;
