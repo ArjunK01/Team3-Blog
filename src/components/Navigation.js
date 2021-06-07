@@ -8,7 +8,6 @@ const Navigation = () => {
     <div>
       <Router>
         <Switch>
-          <Route path="/">Landing</Route>
           <Route path="/about">about</Route>
           <Route path="/user">user</Route>
           <Route path="/blogs">Blogs</Route>
