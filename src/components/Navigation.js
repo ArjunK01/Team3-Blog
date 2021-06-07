@@ -6,12 +6,12 @@ const Navigation = () => {
     <div>
       <Router>
         <Switch>
+          <Route path="/">Landing</Route>
           <Route path="/about">about</Route>
           <Route path="/user">user</Route>
           <Route path="/blogs">Blogs</Route>
           <Route path="/forum">Forum</Route>
           <Route path="/shop">shop</Route>
-          <Route path="/">Landing</Route>
         </Switch>
       </Router>
     </div>
