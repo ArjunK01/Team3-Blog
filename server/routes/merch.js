@@ -25,8 +25,8 @@ router.get("/getall", (req, res) => {
 });
 
 //get merch by merch id
-router.get("/get", (req, res) => {
-  var merch_id = req.query.merch_id;
+router.get("/get/:id", (req, res) => {
+  var merch_id = req.params.id;
   db.collection("merch").doc(merch_id).get()
   .then((doc) => {
     if (doc.exists) {

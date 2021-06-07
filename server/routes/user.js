@@ -3,7 +3,10 @@ var router = express.Router();
 const db = require("../firebase");
 
 //get user by id
-
+router.get("/get/:id", async (req, res) => {
+  var merch_id = req.params.id;
+  res.sendStatus(200);
+})
 
 //delete user
 //sends status 200
