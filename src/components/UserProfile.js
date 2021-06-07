@@ -4,10 +4,7 @@ import FaceIcon from "@material-ui/icons/Face";
 
 const UserProfile = () => {
   return (
-    <div
-      className="user-profile-container"
-      style={{ background: "#ccc", padding: "20px" }}
-    >
+    <div className="user-profile-container" style={{ padding: "20px" }}>
       <div
         className="top-section"
         style={{
