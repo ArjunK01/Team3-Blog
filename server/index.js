@@ -5,6 +5,9 @@ const axios = require("axios");
 const db = require("./firebase");
 var admin = require("firebase-admin");
 
+//const routes = require('./routes');
+//app.use('/', routes);
+
 const PORT = 8000;
 
 const app = express();
@@ -15,6 +18,7 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("HELLO");
 });
+
 
 //get all merch
 app.get("/merch/getall", (req, res) => {
