@@ -1,3 +1,4 @@
+/* __________________ SHOP COMPONENT STYLING ________________*/
 .shop-page-title {
   text-transform: uppercase;
   font-size: 24px;
@@ -21,11 +22,18 @@
 }
 
 .header-filter-sort {
+  padding: 20px;
   display: flex;
   /* flex-direction: row; */
   justify-content: center;
   /* justify-content: flex-end; */
   /* align-items: flex-end; */
+}
+.conditional-filter-sort {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-items: flex-start; */
 }
 
 .sort-select {
@@ -42,7 +50,7 @@
   justify-content: flex-end;
   align-items: center;
 }
-
+/* __________________ PRODUCT COMPONENT STYLING ________________*/
 .products-container {
   display: flex;
   justify-content: center;
@@ -93,6 +101,7 @@
   margin: 0;
 }
 
+/* __________________ MOBILE-FRIENDLY STYLING ________________*/
 @media only screen and (max-width: 800px) {
   .header-tab-selection {
     flex-direction: column;

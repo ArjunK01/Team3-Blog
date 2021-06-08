@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/shop.css";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 const Product = () => {
   return (
