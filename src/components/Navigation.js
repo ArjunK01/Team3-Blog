@@ -1,5 +1,11 @@
 import React, { useContext } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useHistory,
+  Redirect
+} from "react-router-dom";
 import Login from "./Login";
 import { AuthContext } from "../context/AuthProvider";
 import NavBar from "./NavBar";
@@ -10,6 +16,8 @@ import Forum from "./Forum";
 import Shop from "./Shop";
 
 const Navigation = () => {
+  const { user } = useContext(AuthContext);
+  const history = useHistory();
   return (
     <div>
       <Router>
@@ -17,7 +25,11 @@ const Navigation = () => {
         <div className="appContainer">
           <Switch>
             <Route path="/about">about</Route>
-            <Route path="/user">user</Route>
+            <Route path="/user">
+              {user
+                ? `${user.name}, ${user.email}, ${user.handle}, ${user.birthday}`
+                : "Not Signed In"}
+            </Route>
             <Route path="/blogs">
               <Blogs />
             </Route>
@@ -29,7 +41,7 @@ const Navigation = () => {
             </Route>
             <Route path="/cart">cart</Route>
             <Route path="/login">
-              <Login />
+              {user ? <Redirect to="/" /> : <Login />}
             </Route>
             <Route path="/">
               <HomePage />

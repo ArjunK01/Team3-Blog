@@ -77,3 +77,15 @@
 .loginLink:hover .loginLinkText {
   color: var(--dark-blue);
 }
+
+.signOut {
+  cursor: pointer;
+  align-self: flex-end;
+}
+.signOut:hover {
+  color: var(--light-blue);
+}
+
+.signedIn {
+  display: flex;
+}

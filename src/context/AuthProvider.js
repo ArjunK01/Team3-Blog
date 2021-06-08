@@ -15,11 +15,14 @@ const AuthProvider = ({ children }) => {
     firebase.auth().onAuthStateChanged(firebaseUser => {
       setLoading(true);
       if (firebaseUser) {
+        console.log(firebaseUser.uid + " Logged in");
         setTimeout(
           () =>
             axios
-              .get(`http://localhost:8000/login?id=${firebaseUser.uid}`)
+              .get(`http://localhost:8000/user/get/${firebaseUser.uid}`)
               .then(res => {
+                console.log(firebaseUser.uid + " User set");
+
                 setUser(res && res.data);
                 setLoading(false);
               }),
