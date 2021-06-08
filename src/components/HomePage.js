@@ -5,18 +5,20 @@ import CardContent from "@material-ui/core/CardContent";
 import "../App.css";
 
 const HomePage = () => {
+  //Define the screen window width variable
   const windowWidth = window.innerWidth;
   return (
     <div>
       <Card>
         <div style={{ float: "center" }}>
+          {/* City image for the banner */}
           <img
             src={banner}
             alt="City Street"
             style={{
               position: "absolute",
-              width: windowWidth + 1,
-              height: window.innerHeight * 0.75,
+              width: windowWidth + 1, // sets width to the width of the screen
+              height: window.innerHeight * 0.75, // sets height to 3/4 of the screen
               left: 0,
               justifyContent: "center",
               alignItems: "center",
