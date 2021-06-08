@@ -46,7 +46,7 @@ export const LoginForm = ({ login }) => {
           data: {
             email: newUser.user.email,
             name,
-            docId: newUser.user.uid,
+            id: newUser.user.uid,
             handle,
             birthday: b
           }
@@ -106,7 +106,7 @@ export const LoginForm = ({ login }) => {
       <div className="submitContainer mt-2">
         <div
           className="authSubmitBtn"
-          //onClick={() => (login ? logIn() : signUp())}
+          onClick={() => (login ? logIn() : signUp())}
         >
           {login ? "Log In" : "Sign Up"}
         </div>
