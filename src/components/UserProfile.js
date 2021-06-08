@@ -6,6 +6,7 @@ import FaceIcon from "@material-ui/icons/Face";
 const UserProfile = () => {
   return (
     <div className="container">
+      <div className="profile-header">Profile</div>
       <div className="user-top-section">
         <div className="pfp-container">
           <FaceIcon style={{ color: "grey", fontSize: "10rem" }} />
@@ -52,8 +53,6 @@ const UserProfile = () => {
           <div className="blog-content">
             {/* <p className="blog-post">example item</p> */}
             <BlogPost />
-            <BlogPost />
-            <BlogPost />
           </div>
         </div>
         <div className="forum-posts-container">
@@ -63,7 +62,6 @@ const UserProfile = () => {
           </div>
           <div className="forum-content">
             {/* <p className="forum-post">example item</p> */}
-            <BlogPost />
             <BlogPost />
           </div>
         </div>
