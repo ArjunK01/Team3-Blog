@@ -35,7 +35,7 @@ router.post("/create", async (req, res) => {
     handle,
     email,
     birthday,
-    docID,
+    id,
   } = req.body;
 
   const [
@@ -48,8 +48,7 @@ router.post("/create", async (req, res) => {
     purchasedMerch,
   ] = [false, [], [], [], [], [], []]
 
-  await db.collection("user").add({
-    docID,
+  let test = await db.collection('user').doc(id).set({
     name,
     handle,
     email,
