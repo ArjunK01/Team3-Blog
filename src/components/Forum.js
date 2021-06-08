@@ -2,7 +2,6 @@ import React from "react";
 import "../styles/forum.css";
 import { Button } from "@material-ui/core";
 import FeaturedBlogCard from "./FeaturedBlogCard";
-import BlogPost from "./BlogPost";
 
 const Forum = () => {
   return (
