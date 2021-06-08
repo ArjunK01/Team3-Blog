@@ -3,7 +3,15 @@
   display: flex;
   flex-direction: row;
   /* align-items: center; */
-  padding-top: 40px;
+  padding-top: 20px;
+}
+.forum-page-title {
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+  margin-top: 32px;
 }
 
 /* _____________ LEFT SIDE _________________ */
