@@ -44,7 +44,7 @@
 }
 
 .featuredBlogCard {
-  height: 250px;
+  height: 240px;
   display: flex;
   margin-top: 32px;
   margin-bottom: 32px;
@@ -70,10 +70,11 @@
 }
 
 .featuredBlogCardInfo {
-  padding: 14px;
+  padding: 20px 20px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  justify-content: space-between;
 }
 
 .date {
@@ -87,11 +88,165 @@
 .title {
   font-size: 24px;
   font-weight: bold;
+  margin-top: -2px;
 }
 
 .contentPreview {
-  margin-top: 6px;
+  padding-top: 3px;
+  overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+  color: var(--dark-gray);
+}
+
+.featureBlogCardBottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+}
+.bottomRight {
+  display: flex;
+
+  padding: 0;
+}
+
+.icons {
+  display: flex;
+  color: var(--dark-gray);
+}
+
+.likes {
+  display: flex;
+  align-items: flex-end;
+}
+
+.likesIcon {
+  height: 27px;
+  width: 27px;
+  padding: 0;
+  margin-right: 6px;
+}
+
+.likesNumber {
+  margin: 0;
+}
+
+.comments {
+  display: flex;
+  margin-left: 18px;
+  align-items: flex-end;
+}
+
+.location {
+  margin: 0;
+  align-self: flex-end;
+  padding: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: white;
+  font-weight: 600;
+  background-color: #6d757d;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.readMore {
+  align-self: flex-end;
+  background-color: var(--green);
+  font-weight: 500;
+  color: #0a6357;
+  padding: 3px 16px;
+  border-radius: 3px;
+  margin-left: 24px;
+  margin-bottom: -2px;
+}
+
+.allBlogContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5%;
+  row-gap: 32px;
+  margin-bottom: 64px;
+}
+
+.allBlogCardContainer {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 2px 3px 0 hsla(0, 0%, 0%, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  height: 485px;
+  display: flex;
+  flex-direction: column;
+}
+
+.allBlogCardContainer:hover {
+  cursor: pointer;
+  background-color: var(--light-gray);
+}
+
+.imageContainer {
+  width: 100%;
+  max-height: 100%;
+  padding-top: 56.25%;
+  background-size: 100% 100%;
+}
+
+.infoContainer {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.allTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.allDate {
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.7px;
+  font-size: 16px;
+  color: #7389ae;
+}
+
+.allLocation {
+  text-transform: uppercase;
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  background-color: #6d757d;
+}
+
+.allTitle {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: -6px;
+}
+
+.allContent {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  color: var(--dark-gray);
+  margin-top: -4px;
+  padding-bottom: 5px;
+}
+
+.allCardBottom {
+  display: flex;
+  justify-content: space-between;
 }

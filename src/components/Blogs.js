@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../styles/blogs.css";
 import FeaturedBlogCard from "./FeaturedBlogCard";
+import AllBlogCard from "./AllBlogCard";
 
 const Blogs = () => {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   return (
     <div clasName="blogContainer">
       <div className="blogHeaderContainer">
@@ -38,10 +39,17 @@ const Blogs = () => {
         <div className="blogContentContainer">
           {toggle ? (
             <div>
-              <FeaturedBlogCard /> <FeaturedBlogCard /> <FeaturedBlogCard />{" "}
+              <FeaturedBlogCard />
+              <FeaturedBlogCard />{" "}
             </div>
           ) : (
-            "All Blogs"
+            <div className="allBlogContainer">
+              <AllBlogCard />
+              <AllBlogCard />
+              <AllBlogCard />
+              <AllBlogCard />
+              <AllBlogCard />
+            </div>
           )}
         </div>
       </div>

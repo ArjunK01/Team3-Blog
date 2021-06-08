@@ -6,6 +6,8 @@ import NavBar from "./NavBar";
 import "../App.css";
 import HomePage from "./HomePage";
 import Blogs from "./Blogs";
+import Forum from "./Forum";
+import Shop from "./Shop";
 
 const Navigation = () => {
   return (
@@ -19,8 +21,12 @@ const Navigation = () => {
             <Route path="/blogs">
               <Blogs />
             </Route>
-            <Route path="/forum">Forum</Route>
-            <Route path="/shop">shop</Route>
+            <Route path="/forum">
+              <Forum />
+            </Route>
+            <Route path="/shop">
+              <Shop />
+            </Route>
             <Route path="/cart">cart</Route>
             <Route path="/login">
               <Login />
