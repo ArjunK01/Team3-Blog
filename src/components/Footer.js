@@ -6,14 +6,7 @@ import TwitterIcon from "@material-ui/icons/Instagram";
 import YouTubeIcon from "@material-ui/icons/Instagram";
 
 const Footer = () => {
-  return (
-    <div class="Footer">
-      Hi
-      <InstagramIcon />
-      <TwitterIcon />
-      <YouTubeIcon />
-    </div>
-  );
+  return <div class="Footer">Hello</div>;
 };
 
 export default Footer;
