@@ -35,6 +35,7 @@ router.post("/create", async (req, res) => {
     handle,
     email,
     birthday,
+    docID,
   } = req.body;
 
   const [
@@ -48,6 +49,7 @@ router.post("/create", async (req, res) => {
   ] = [false, [], [], [], [], [], []]
 
   await db.collection("user").add({
+    docID,
     name,
     handle,
     email,
