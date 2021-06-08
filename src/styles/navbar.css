@@ -1,5 +1,6 @@
 .navContainer {
   background-color: var(--dark-blue);
+  margin-bottom: 32px;
 }
 
 .navWidth {

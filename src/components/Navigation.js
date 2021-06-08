@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthProvider";
 import NavBar from "./NavBar";
 import "../App.css";
 import HomePage from "./HomePage";
+import Blogs from "./Blogs";
 
 const Navigation = () => {
   return (
@@ -15,7 +16,9 @@ const Navigation = () => {
           <Switch>
             <Route path="/about">about</Route>
             <Route path="/user">user</Route>
-            <Route path="/blogs">Blogs</Route>
+            <Route path="/blogs">
+              <Blogs />
+            </Route>
             <Route path="/forum">Forum</Route>
             <Route path="/shop">shop</Route>
             <Route path="/cart">cart</Route>
