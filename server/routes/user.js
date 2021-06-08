@@ -4,8 +4,19 @@ const db = require("../firebase");
 
 //get user by id
 router.get("/get/:id", async (req, res) => {
-  var merch_id = req.params.id;
-  res.sendStatus(200);
+  var user_id = req.params.id;
+  db.collection("user").doc(user_id).get()
+  .then((doc) => {
+    if (doc.exists) {
+      res.send({ id: doc.id, ...doc.data()});
+    }
+    else {
+      res.sendStatus(404);
+    }
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+  });
 })
 
 //delete user
@@ -50,10 +61,10 @@ router.post("/create", async (req, res) => {
     purchasedMerch,
   });
 
-  sendStatus(200);
+  res.sendStatus(200);
 });
 
-//get user by id
+//edit user by id
 router.put("/edit", async (req, res) => {
   const {
     user_id,
