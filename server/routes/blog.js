@@ -11,9 +11,7 @@ router.get("/", (req, res) => {
  * Sends as an array
  */
 router.get("/get", (req, res) => {
-  console.log('here')
   const blogRef = db.collection("blogs");
-  console.log('here')
   let temp = [];
   blogRef
     .get()
@@ -73,7 +71,7 @@ router.put("/like", (req, res) => {
 router.delete("/delete", async(req, res) => {
   const { id } = req.body;
 
-  await db.collection("events").doc(id).delete();
+  await db.collection("blogs").doc(id).delete();
 
   res.sendStatus(200);
 });
@@ -83,7 +81,7 @@ router.delete("/delete", async(req, res) => {
  * Sends 200 when successful
  */
 router.put("/edit", async(req, res) => {
-  await db.collection("blogs").doc(req.body.id).set(req.body);
+  await db.collection("blogs").doc(req.body.id).update(req.body);
 
   res.sendStatus(200);
 });
@@ -125,7 +123,7 @@ router.post("/comments/create/:id", async(req, res) => {
  */
 router.put("/comments/like/:id", (req, res) => {  
   const { comment_id } = req.body;
-  db.collection("blogs").doc(req.params.id).collection("comments").get()
+  db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
     if (doc.exists) {
       curr_likes = doc.data().likes;
@@ -135,7 +133,7 @@ router.put("/comments/like/:id", (req, res) => {
     }
     curr_likes = curr_likes+1;
 
-    db.collection("blogs").doc(blog_id)
+    db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
       likes: curr_likes,
     })
@@ -156,7 +154,7 @@ router.put("/comments/like/:id", (req, res) => {
 router.delete("/comments/delete/id:", async(req, res) => {
   const { id } = req.body;
 
-  await db.collection("events").doc(req.params.id).collection("comments").doc(id).delete();
+  await db.collection("blogs").doc(req.params.id).collection("comments").doc(id).delete();
 
   res.sendStatus(200);
 });
@@ -166,7 +164,7 @@ router.delete("/comments/delete/id:", async(req, res) => {
  * @param id - the blog post whose comment is being edited
  */
 router.put("/comments/edit/id:", async(req, res) => {
-  await db.collection("blogs").doc(req.params.id).collection("comments").doc(req.body.id).set(req.body);
+  await db.collection("blogs").doc(req.params.id).collection("comments").doc(req.body.id).update(req.body);
 
   res.sendStatus(200);
 });
