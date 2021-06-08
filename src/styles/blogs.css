@@ -5,6 +5,7 @@
   opacity: 0.8;
   letter-spacing: 0.5px;
   margin-top: 32px;
+  margin-bottom: 6px;
 }
 
 .blogChoice {
@@ -168,8 +169,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 5%;
+  margin-top: 32px;
   row-gap: 32px;
-  margin-bottom: 64px;
+  margin-bottom: 86px;
 }
 
 .allBlogCardContainer {
