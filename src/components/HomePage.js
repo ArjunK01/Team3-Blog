@@ -4,16 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import "../App.css";
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 600,
-    backgroundColor: "",
-    color: "#446DAB",
-  },
-});
-
 const HomePage = () => {
-  const classes = useStyles();
   const windowWidth = window.innerWidth;
   return (
     <div>
@@ -44,8 +35,8 @@ const HomePage = () => {
           fontSize: 30,
         }}
       >
-        <Card className={classes.root}>
-          <CardContent>
+        <Card>
+          <CardContent style={{ color: "#1d4270" }}>
             <p>Welcome to City Girl Summer!</p>
           </CardContent>
         </Card>
