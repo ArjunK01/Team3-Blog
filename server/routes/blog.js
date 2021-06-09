@@ -168,10 +168,10 @@ router.delete("/comments/delete/:id", async(req, res) => {
 
   await db.collection("blogs").doc(req.params.id).collection("comments").doc(id).delete();
 
-  var user_data = db.collection("user").doc(user_id);
+  /*var user_data = db.collection("user").doc(user_id);
   var arrUnion = user_data.update({
     blogComments: admin.firestore.FieldValue.arrayRemove({"blog_id": req.params.id, "comment_id": id})
-  });
+  });*/
 
   res.sendStatus(200);
 });

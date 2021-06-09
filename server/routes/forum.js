@@ -142,7 +142,14 @@ router.get("/comments/get/:id", (req, res) => {
  * Sends 200 if comment made succesffully
  */
 router.post("/comments/create/:id", async(req, res) => {
-  await db.collection("forum").doc(req.params.id).collection("comments").push(req.body);
+  db.collection("forum").doc(req.params.id).collection("comments").add(req.body)
+  .then(docRef => {
+    console.log(docRef.id);
+    var user_data = db.collection("user").doc(req.body.user_id);
+    var arrUnion = user_data.update({
+      forumComments: admin.firestore.FieldValue.arrayUnion({"forum_id": req.params.id, "comment_id": docRef.id})
+    });
+  });
 
   res.sendStatus(200);
 });
