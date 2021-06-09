@@ -71,20 +71,18 @@ router.get("/", (req, res) => {
  */
 router.post("/create", async(req, res) => {
   const{
-    blog_id,
+    forum_id,
     title,
     content,
-    image,
     likes,
-    city
+    topic
   } = req.body;
   const dateCreated = admin.firestore.Timestamp.now()
-  await db.collection("forum").doc(req.body.id).set({
+  await db.collection("forum").doc(forum_id).set({
     title,
     content,
-    image,
     likes,
-    city,
+    topic,
     dateCreated
   });
 
