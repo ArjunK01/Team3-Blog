@@ -15,7 +15,7 @@ const Blogs = () => {
           <p className="blogMain">
             {toggle ? "Featured Blog Posts" : "All Blog Posts"}
           </p>
-          <div className="blogRight" onClick={() => setToggle(tog => !tog)}>
+          <div className="blogRight" onClick={() => setToggle((tog) => !tog)}>
             <p className="blogSecondary ">
               {toggle ? "See all blog posts" : "See featured blog posts"}
             </p>
