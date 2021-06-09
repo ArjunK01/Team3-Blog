@@ -52,7 +52,7 @@ router.get("/", (req, res) => {
     .then((resp) => {
       resp.forEach((doc) => {
         if (doc.isFeatured) {
-          temp.push(doc.data());
+          temp.push({id: doc.id, ...doc.data()});
         }
       });
     })
