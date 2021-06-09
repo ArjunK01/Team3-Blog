@@ -50,7 +50,23 @@ router.get("/get", (req, res) => {
  * Request body includes all blog information
  */
 router.post("/create", async(req, res) => {
-  await db.collection("blogs").doc(req.body.id).set(req.body);
+  const{
+    blog_id,
+    title,
+    content,
+    image,
+    likes,
+    city
+  } = req.body;
+  const dateCreated = admin.firestore.Timestamp.now()
+  await db.collection("blogs").doc(blog_id).set({
+    title,
+    content,
+    image,
+    likes,
+    city,
+    dateCreated
+  });
 
   res.sendStatus(200);
 });
