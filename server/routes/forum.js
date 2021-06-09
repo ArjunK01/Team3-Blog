@@ -16,12 +16,29 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({id: doc.id, ...doc.data()});
       });
     })
     .then(() => {
       res.send(temp);
     });
+});
+/**
+ * Retrieve forum post by id from collection
+ */
+ router.get("/get/:id", (req, res) => {
+  db.collection("forum").doc(req.params.id).get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.send({id: doc.id, ...doc.data()});
+      }
+      else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    })
 });
 /**
  * Retrieve featured forums from collection
