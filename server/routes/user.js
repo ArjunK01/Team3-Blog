@@ -122,7 +122,7 @@ router.post("/create", async (req, res) => {
 });
 
 //edit user isAdmin by id
-router.put("/edit", async (req, res) => {
+router.put("/edit-admin", async (req, res) => {
   const {
     user_id,
     isAdmin
