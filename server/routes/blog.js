@@ -36,7 +36,7 @@ router.get("/get", (req, res) => {
     .then((resp) => {
       resp.forEach((doc) => {
         if (doc.isFeatured) {
-          temp.push(doc.data());
+          temp.push({id: doc.id, ...doc.data()});
         }
       });
     })
@@ -44,7 +44,23 @@ router.get("/get", (req, res) => {
       res.send(temp);
     });
 });
-
+/**
+ * Retrieve blog by id from collection
+ */
+router.get("/get/:id", (req, res) => {
+  db.collection("blogs").doc(req.params.id).get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.send({id: doc.id, ...doc.data()});
+      }
+      else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    })
+});
 /**
  * Create a new blog post
  * Request body includes all blog information
