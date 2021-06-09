@@ -3,7 +3,7 @@
 }
 
 .navWidth {
-  max-width: 1260px;
+  /* max-width: 1260px; */
   display: flex;
 
   justify-content: space-between;
@@ -76,4 +76,31 @@
 
 .loginLink:hover .loginLinkText {
   color: var(--dark-blue);
+}
+
+@media only screen and (max-width: 800px) {
+  .navWidth {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+  }
+  .navCenterLogo {
+    font-size: 5vw;
+  }
+
+  /* .navLeft, */
+  .links {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  /* .navRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+  } */
 }
