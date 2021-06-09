@@ -261,9 +261,9 @@
   .imageContainer {
     padding-top: 23.25%;
     overflow: hidden;
-    /* position: relative;
-    margin-top: -50%;
-    transform: translateY(50%); */
+  }
+  .featuredBlogCardImageContainer {
+    display: none;
   }
   .allContent {
     -webkit-line-clamp: 10;
