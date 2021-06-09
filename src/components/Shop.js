@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/shop.css";
 import { Button, TextField } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
@@ -32,6 +32,7 @@ const Shop = () => {
     setOpen(false);
   };
   // ___________
+  const { user } = useContext(AuthContext);
   return (
     <div>
       <div className="shop-page-title">Shop</div>
@@ -99,28 +100,30 @@ const Shop = () => {
             )}
           </div>
           {/* {user && ( */}
-          <div className="admin-edit-buttons-container">
-            <Button
-              style={{
-                background: "#ff8b8b",
-                color: "white",
-                marginRight: "1rem",
-                boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={handleClickOpen}
-              style={{
-                background: "#6fbd6f",
-                color: "white",
-                boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              Add
-            </Button>
-          </div>
+          {user && (
+            <div className="admin-edit-buttons-container">
+              <Button
+                style={{
+                  background: "#ff8b8b",
+                  color: "white",
+                  marginRight: "1rem",
+                  boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={handleClickOpen}
+                style={{
+                  background: "#6fbd6f",
+                  color: "white",
+                  boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                Add
+              </Button>
+            </div>
+          )}
           <Dialog
             open={open}
             onClose={handleClose}

@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
   useHistory,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import Login from "./Login";
 import { AuthContext } from "../context/AuthProvider";
