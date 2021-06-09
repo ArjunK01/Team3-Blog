@@ -11,7 +11,7 @@ const Footer = () => {
         ></link>
         <div class="container">
           <div
-            class="text-center center-block"
+            class="text-center center-block footer-social-spacing"
             style={{ color: "white", margin: 1 }}
           >
             <a href="https://www.instagram.com">

@@ -22,6 +22,7 @@
 .blogRight:hover {
   color: black;
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .blogMain {
@@ -57,6 +58,7 @@
 .featuredBlogCard:hover {
   background-color: #f3f4f6;
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .featuredBlogCardImageContainer {
@@ -188,6 +190,7 @@
 .allBlogCardContainer:hover {
   cursor: pointer;
   background-color: var(--light-gray);
+  transition: all 0.25s ease;
 }
 
 .imageContainer {
