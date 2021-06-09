@@ -20,7 +20,7 @@ const HomePage = () => {
             style={{
               position: "absolute",
               width: windowWidth + 1, // sets width to the width of the screen
-              height: window.innerHeight * 0.75, // sets height to 3/4 of the screen
+              height: window.innerHeight, // sets height to  the screen
               left: 0,
               justifyContent: "center",
               alignItems: "center",
@@ -33,7 +33,7 @@ const HomePage = () => {
           position: "absolute",
           left: windowWidth / 7,
           right: windowWidth / 7,
-          top: window.innerHeight * 0.8,
+          top: window.innerHeight * 1.1,
         }}
       >
         <div className="blogHeader"> Featured Blog Posts</div>
