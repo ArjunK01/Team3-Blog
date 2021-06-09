@@ -14,13 +14,14 @@ const NavBar = () => {
         <div className="navLeft">
           <div className="links">
             <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
             <Link to="/blogs">Blog</Link>
             <Link to="/shop">Shop</Link>
             <Link to="/forum">Forum</Link>
           </div>
         </div>
         <div className="navCenter">
-          <div className="navCenterLogo">City Girl Summer</div>
+          <div className="navCenterLogo">Camille's Corner</div>
         </div>
         <div className="navRight">
           <div className="cartIcon" onClick={() => history.push("/cart")}>
