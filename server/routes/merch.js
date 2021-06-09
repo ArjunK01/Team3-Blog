@@ -114,7 +114,7 @@ router.put("/purchase", (req, res) => {
 //returns all remaining merch
 router.delete("/delete", async (req, res) => {
   const { merch_id } = req.body;
-  db.collection("merch").doc(merch_id).delete();
+  db.collection("merch").doc(merch_id).update({"isVisible": false});
 
   let merchList = [];
   db.collection("merch").get()
@@ -147,12 +147,15 @@ router.post("/create", async (req, res) => {
     stock,
   } = req.body;
 
+  var isVisible = true;
+
   await db.collection("merch").add({
     title,
     images,
     description,
     price,
     stock,
+    isVisible
   });
 
   let merchList = [];
