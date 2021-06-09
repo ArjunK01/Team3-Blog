@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/blogs.css";
 import FeaturedBlogCard from "./FeaturedBlogCard";
 import AllBlogCard from "./AllBlogCard";
+import { ApiContext } from "../context/ApiProvider";
 
 const Blogs = () => {
+  const { blog } = useContext(ApiContext);
   const [toggle, setToggle] = useState(false);
   return (
     <div clasName="blogContainer">
