@@ -24,6 +24,26 @@ router.get("/get", (req, res) => {
       res.send(temp);
     });
 });
+/**
+ * Retrieve featured blogs from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const blogRef = db.collection("blogs");
+  let temp = [];
+  blogRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push(doc.data());
+        }
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
 
 /**
  * Create a new blog post
