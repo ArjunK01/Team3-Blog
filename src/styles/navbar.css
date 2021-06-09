@@ -78,6 +78,18 @@
   color: var(--dark-blue);
 }
 
+.signOut {
+  cursor: pointer;
+  align-self: flex-end;
+}
+.signOut:hover {
+  color: var(--light-blue);
+}
+
+.signedIn {
+  display: flex;
+}
+
 @media only screen and (max-width: 800px) {
   .navWidth {
     display: flex;
@@ -98,9 +110,4 @@
     justify-content: center;
     align-items: center;
   }
-  /* .navRight {
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-  } */
 }
