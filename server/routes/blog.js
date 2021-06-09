@@ -24,13 +24,49 @@ router.get("/get", (req, res) => {
       res.send(temp);
     });
 });
+/**
+ * Retrieve featured blogs from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const blogRef = db.collection("blogs");
+  let temp = [];
+  blogRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push(doc.data());
+        }
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
 
 /**
  * Create a new blog post
  * Request body includes all blog information
  */
 router.post("/create", async(req, res) => {
-  await db.collection("blogs").doc(req.body.id).set(req.body);
+  const{
+    blog_id,
+    title,
+    content,
+    image,
+    likes,
+    city
+  } = req.body;
+  const dateCreated = admin.firestore.Timestamp.now()
+  await db.collection("blogs").doc(blog_id).set({
+    title,
+    content,
+    image,
+    likes,
+    city,
+    dateCreated
+  });
 
   res.sendStatus(200);
 });
