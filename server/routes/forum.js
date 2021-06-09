@@ -52,6 +52,11 @@ router.get("/", (req, res) => {
 router.post("/create", async(req, res) => {
   await db.collection("forum").doc(req.body.id).set(req.body);
 
+  var user_data = db.collection("user").doc(req.body.user_id);
+  var arrUnion = user_data.update({
+    forumPosts: admin.firestore.FieldValue.arrayUnion(req.body.id)
+  });
+
   res.sendStatus(200);
 });
 
@@ -142,7 +147,7 @@ router.post("/comments/create/:id", async(req, res) => {
  * @param id - the ID of the forum post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {  
+router.put("/comments/like/:id", (req, res) => {
   const { comment_id } = req.body;
   db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
