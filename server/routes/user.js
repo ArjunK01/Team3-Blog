@@ -2,6 +2,27 @@ var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
 
+//get all users
+router.get("/getall", (req, res) => {
+  let userList = [];
+  db.collection("user").get()
+  .then((snapshot) => {
+    snapshot.forEach((doc) => {
+      userList.push({
+        id: doc.id,
+        name: doc.data().name,
+        isAdmin: doc.data().isAdmin,
+        email: doc.data().email,
+        handle: doc.data().handle,
+      });
+    });
+    res.send(userList)
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+  });
+});
+
 //get user by id
 router.get("/get/:id", async (req, res) => {
   var user_id = req.params.id;
@@ -129,7 +150,6 @@ router.put("/edit", async (req, res) => {
   .catch((error) => {
     res.sendStatus(404);
   });
-
 })
 
 module.exports = router;
