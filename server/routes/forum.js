@@ -24,6 +24,26 @@ router.get("/", (req, res) => {
     });
 });
 /**
+ * Retrieve featured forums from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const forumRef = db.collection("forum");
+  let temp = [];
+  forumRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push(doc.data());
+        }
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
+/**
  * Retrieve all forums in a topic
  * @param topic - the topic of forum
  * Sends as an array
