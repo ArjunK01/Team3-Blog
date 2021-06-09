@@ -42,7 +42,7 @@ router.post("/create", async(req, res) => {
  * Sends status 200 if successful, 404 otherwise
  */
 router.put("/like", (req, res) => {
-  const { blog_id } = req.body;
+  const { blog_id, user_id } = req.body;
   db.collection("blogs").doc(blog_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -57,7 +57,12 @@ router.put("/like", (req, res) => {
     .update({
       likes: curr_likes,
     })
-    .then(() => {
+    .then((docRef) => {
+      console.log(docRef.id);
+      var user_data = db.collection("user").doc(req.body.user_id);
+      var arrUnion = user_data.update({
+        likedBlogPosts: admin.firestore.FieldValue.arrayUnion(docRef.id)
+      });
       res.sendStatus(200);
     })
     .catch((error) => {
