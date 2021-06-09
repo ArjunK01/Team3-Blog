@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
+var admin = require('firebase-admin');
 
 router.get("/", (req, res) => {
   res.send("test");
@@ -111,8 +112,14 @@ router.get("/comments/get/:id", (req, res) => {
  * Sends 200 if comment made succesffully
  */
 router.post("/comments/create/:id", async(req, res) => {
-  await db.collection("blogs").doc(req.params.id).collection("comments").push(req.body);
-
+  db.collection("blogs").doc(req.params.id).collection("comments").add(req.body)
+  .then(docRef => {
+    console.log(docRef.id);
+    var user_data = db.collection("user").doc(req.body.user_id);
+    var arrUnion = user_data.update({
+      blogComments: admin.firestore.FieldValue.arrayUnion({"blog_id": req.params.id, "comment_id": docRef.id})
+    });
+  });
   res.sendStatus(200);
 });
 /**
@@ -121,7 +128,7 @@ router.post("/comments/create/:id", async(req, res) => {
  * @param id - the ID of the blog post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {  
+router.put("/comments/like/:id", (req, res) => {
   const { comment_id } = req.body;
   db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
