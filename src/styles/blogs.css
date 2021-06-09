@@ -252,3 +252,20 @@
   display: flex;
   justify-content: space-between;
 }
+
+@media only screen and (max-width: 800px) {
+  .allBlogContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .imageContainer {
+    padding-top: 23.25%;
+    overflow: hidden;
+    /* position: relative;
+    margin-top: -50%;
+    transform: translateY(50%); */
+  }
+  .allContent {
+    -webkit-line-clamp: 10;
+  }
+}

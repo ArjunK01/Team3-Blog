@@ -98,12 +98,12 @@
     align-items: center;
   }
   .navCenterLogo {
-    font-size: 5vw;
+    font-size: 100%;
   }
 
   /* .navLeft, */
   .links {
-    margin-top: 40px;
+    margin-top: 45px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
