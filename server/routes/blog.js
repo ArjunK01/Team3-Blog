@@ -57,16 +57,16 @@ router.put("/like", (req, res) => {
     .update({
       likes: curr_likes,
     })
-    .then((docRef) => {
-      console.log(docRef.id);
-      var user_data = db.collection("user").doc(user_id);
-      var arrUnion = user_data.update({
-        likedBlogPosts: admin.firestore.FieldValue.arrayUnion(docRef.id)
-      });
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((error) => {
       res.sendStatus(404);
+    });
+
+    var user_data = db.collection("user").doc(user_id);
+    var arrUnion = user_data.update({
+      likedBlogPosts: admin.firestore.FieldValue.arrayUnion(blog_id)
     });
   });
 });
