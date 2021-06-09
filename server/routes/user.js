@@ -121,6 +121,31 @@ router.post("/create", async (req, res) => {
   res.sendStatus(200);
 });
 
+//edit user isAdmin by id
+router.put("/edit", async (req, res) => {
+  const {
+    user_id,
+    isAdmin
+  } = req.body;
+
+  await db.collection("user").doc(user_id).update({
+    isAdmin
+  });
+
+  db.collection("user").doc(user_id).get()
+  .then((doc) => {
+    if (doc.exists) {
+      res.send({ id: doc.id, ...doc.data()});
+    }
+    else {
+      res.sendStatus(404);
+    }
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+  });
+})
+
 //edit user by id
 router.put("/edit", async (req, res) => {
   const {
