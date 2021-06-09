@@ -24,6 +24,26 @@ router.get("/", (req, res) => {
     });
 });
 /**
+ * Retrieve featured forums from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const forumRef = db.collection("forum");
+  let temp = [];
+  forumRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push(doc.data());
+        }
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
+/**
  * Retrieve all forums in a topic
  * @param topic - the topic of forum
  * Sends as an array
@@ -50,7 +70,21 @@ router.get("/", (req, res) => {
  * Request body includes all forum information
  */
 router.post("/create", async(req, res) => {
-  await db.collection("forum").doc(req.body.id).set(req.body);
+  const{
+    forum_id,
+    title,
+    content,
+    likes,
+    topic
+  } = req.body;
+  const dateCreated = admin.firestore.Timestamp.now()
+  await db.collection("forum").doc(forum_id).set({
+    title,
+    content,
+    likes,
+    topic,
+    dateCreated
+  });
 
   res.sendStatus(200);
 });
