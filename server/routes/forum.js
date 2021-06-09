@@ -88,6 +88,11 @@ router.put("/like", (req, res) => {
     .catch((error) => {
       res.sendStatus(404);
     });
+
+    var user_data = db.collection("user").doc(user_id);
+    var arrUnion = user_data.update({
+      likedForumLikes: admin.firestore.FieldValue.arrayUnion(forum_id)
+    });
   });
 });
 /**
