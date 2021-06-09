@@ -23,7 +23,7 @@ app.use("/blog", blogRouter);
 app.use("/forum", forumRouter);
 
 app.listen(PORT, () => {
-  console.log(listening);
+  console.log("listening");
 });
 
 module.exports = app;
