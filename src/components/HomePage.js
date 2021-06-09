@@ -2,13 +2,15 @@ import banner from "../images/homeBanner.png";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import image from "../images/beach.jpg";
+import FeaturedBlogCard from "./FeaturedBlogCard";
 import "../App.css";
 
 const HomePage = () => {
   //Define the screen window width variable
   const windowWidth = window.innerWidth;
   return (
-    <div>
+    <div style={{ height: 1400 }}>
       <Card>
         <div style={{ float: "center" }}>
           {/* City image for the banner */}
@@ -28,20 +30,15 @@ const HomePage = () => {
       </Card>
       <div
         style={{
-          textAlign: "left",
-          marginRight: 20,
-          marginLeft: 20,
-          marginBottom: 50,
-          top: window.innerHeight - 200,
-          position: "relative",
-          fontSize: 30,
+          position: "absolute",
+          left: windowWidth / 7,
+          right: windowWidth / 7,
+          top: window.innerHeight * 0.8,
         }}
       >
-        <Card>
-          <CardContent style={{ color: "#1d4270" }}>
-            <p>Welcome to City Girl Summer!</p>
-          </CardContent>
-        </Card>
+        <div className="blogHeader"> Featured Blog Posts</div>
+        <FeaturedBlogCard />
+        <FeaturedBlogCard />
       </div>
     </div>
   );
