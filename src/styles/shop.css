@@ -123,11 +123,23 @@
   font-size: 15px;
 }
 
-.add-to-cart-btn {
+.bottom-actions {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.add-to-cart-btn {
+  /* display: flex; */
+  /* justify-content: flex-end; */
+  /* align-items: center; */
   color: var(--light-blue);
+}
+.delete-product-btn {
+  color: rgb(255, 139, 139);
+}
+.delete-product-btn:hover {
+  color: rgb(178, 98, 98);
 }
 
 .add-to-cart-btn:hover {

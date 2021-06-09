@@ -38,7 +38,7 @@ const Shop = () => {
   };
   // ___________
   const { user } = useContext(AuthContext);
-  const { merch } = useContext(ApiContext);
+  const { merch, getMerch } = useContext(ApiContext);
 
   // fields to be inputted into the axios create request
   const [newTitle, setNewTitle] = useState("");
@@ -65,8 +65,11 @@ const Shop = () => {
 
   // force a refresh
   const refresh = () => {
-    window.location.reload(false);
+    // window.location.reload(false);
+    getMerch();
   };
+
+  const [isEdit, setIsEdit] = useState(false);
 
   return (
     <div>
@@ -142,6 +145,9 @@ const Shop = () => {
                   color: "white",
                   marginRight: "1rem",
                   boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
+                }}
+                onClick={() => {
+                  setIsEdit(!isEdit);
                 }}
               >
                 Edit
@@ -233,7 +239,6 @@ const Shop = () => {
                 label="Image URL"
                 placeholder="Ex. http://...."
                 type="text"
-                required="false"
                 fullWidth
                 onChange={(e) => {
                   setNewImages(e.target.value);
@@ -247,7 +252,6 @@ const Shop = () => {
                 label="Description"
                 placeholder="Ex. 100% cotton"
                 type="text"
-                required="true"
                 fullWidth
                 onChange={(e) => {
                   setNewDescription(e.target.value);
@@ -268,8 +272,8 @@ const Shop = () => {
                 onClick={() => {
                   // call createProduct() to database via axios
                   createProduct();
-                  refresh();
-                  // handleClose();
+                  // refresh();
+                  handleClose();
                 }}
                 color="primary"
                 // style={{ background: "#6fbd6f" }}
@@ -293,6 +297,7 @@ const Shop = () => {
                   price={m.price}
                   stock={m.stock}
                   description={m.description}
+                  isEdit={isEdit}
                 />
               );
             })}

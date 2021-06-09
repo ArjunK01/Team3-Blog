@@ -2,8 +2,9 @@ import React from "react";
 import "../styles/shop.css";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-const Product = ({ title, price, stock, description }) => {
+const Product = ({ title, price, stock, description, isEdit }) => {
   return (
     <div className="product-card">
       <div className="product-content">
@@ -42,6 +43,17 @@ const Product = ({ title, price, stock, description }) => {
           >
             <AddShoppingCartIcon />
           </div>
+          {isEdit && (
+            <div
+              className="delete-product-btn"
+              onClick={() => {
+                alert("some action");
+                // add product to cart BY PRODUCT ID
+              }}
+            >
+              <DeleteIcon />
+            </div>
+          )}
         </div>
       </div>
     </div>
