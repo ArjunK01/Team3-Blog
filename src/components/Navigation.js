@@ -14,6 +14,7 @@ import HomePage from "./HomePage";
 import Blogs from "./Blogs";
 import Forum from "./Forum";
 import Shop from "./Shop";
+import AdminPage from "./AdminPage";
 
 const Navigation = () => {
   const { user } = useContext(AuthContext);
@@ -32,6 +33,17 @@ const Navigation = () => {
             </Route>
             <Route path="/blogs">
               <Blogs />
+            </Route>
+            <Route path="/admin">
+              {user ? (
+                user.isAdmin ? (
+                  <AdminPage />
+                ) : (
+                  <Redirect to="/" />
+                )
+              ) : (
+                <Redirect to="/" />
+              )}
             </Route>
             <Route path="/forum">
               <Forum />
