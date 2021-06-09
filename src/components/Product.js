@@ -14,6 +14,16 @@ const Product = () => {
           <p className="product-name reset-padding">Product</p>
           <p className="product-price reset-padding">$30</p>
         </div>
+        <div className="bottom-actions">
+          <div
+            className="add-to-cart-btn"
+            onClick={() => {
+              alert("some action");
+            }}
+          >
+            <AddShoppingCartIcon />
+          </div>
+        </div>
       </div>
     </div>
   );
