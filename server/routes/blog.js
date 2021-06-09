@@ -17,7 +17,7 @@ router.get("/get", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({id: doc.id, ...doc.data()});
       });
     })
     .then(() => {

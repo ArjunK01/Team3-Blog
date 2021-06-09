@@ -23,7 +23,11 @@ app.use("/blog", blogRouter);
 app.use("/forum", forumRouter);
 
 app.listen(PORT, () => {
+<<<<<<< Updated upstream
   console.log("Listening");
+=======
+  console.log('listening');
+>>>>>>> Stashed changes
 });
 
 module.exports = app;
