@@ -160,10 +160,10 @@ router.put("/comments/like/:id", (req, res) => {
 });
 /**
  * Deletes a comment
- * ID of the comment in body
+ * ID of the comment and user in body and
  * @param id - blog post whose comment is being deleted
  */
-router.delete("/comments/delete/id:", async(req, res) => {
+router.delete("/comments/delete/:id", async(req, res) => {
   const { id, user_id } = req.body;
 
   await db.collection("blogs").doc(req.params.id).collection("comments").doc(id).delete();
@@ -180,7 +180,7 @@ router.delete("/comments/delete/id:", async(req, res) => {
  * All new comment information in body
  * @param id - the blog post whose comment is being edited
  */
-router.put("/comments/edit/id:", async(req, res) => {
+router.put("/comments/edit/:id", async(req, res) => {
   await db.collection("blogs").doc(req.params.id).collection("comments").doc(req.body.id).update(req.body);
 
   res.sendStatus(200);
