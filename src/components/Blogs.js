@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { getBindingIdentifiers } from "@babel/types";
+import { AuthContext } from "../context/AuthProvider";
 
 function getModalStyle() {
   const top = 50 + Math.random();
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Blogs = () => {
+  const { user } = useContext(AuthContext);
   const { blog, getBlog } = useContext(ApiContext);
   const [toggle, setToggle] = useState(false);
   const [search, setSearch] = useState("");
@@ -205,16 +207,18 @@ const Blogs = () => {
             onChange={e => setSearch(e.target.value)}
             class="form-control mb-2 "
           />
-          <div className="addBlogBtn" onClick={handleOpen}>
-            Create Blog
-          </div>
+          {user && user.isAdmin && (
+            <div className="addBlogBtn" onClick={handleOpen}>
+              Create Blog
+            </div>
+          )}
         </div>
 
         <div className="blogContentContainer">
           {toggle ? (
             <div style={{ marginTop: "-12px" }}>
               {featuredList.map(b => (
-                <FeaturedBlogCard updateBlog={updateBlog} b={b}/>
+                <FeaturedBlogCard updateBlog={updateBlog} b={b} />
               ))}
             </div>
           ) : (
