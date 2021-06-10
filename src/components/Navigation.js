@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
   useHistory,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 import Login from "./Login";
 import { AuthContext } from "../context/AuthProvider";
@@ -17,6 +17,7 @@ import Forum from "./Forum";
 import Shop from "./Shop";
 import AdminPage from "./AdminPage";
 import FullBlog from "./FullBlog";
+import CartPage from "./CartPage";
 
 const Navigation = () => {
   const { user } = useContext(AuthContext);
@@ -41,7 +42,7 @@ const Navigation = () => {
             <Route path="/blogs">
               <Blogs />
             </Route>
-            
+
             <Route path="/admin">
               {user ? (
                 user.isAdmin ? (
@@ -59,7 +60,9 @@ const Navigation = () => {
             <Route path="/shop">
               <Shop />
             </Route>
-            <Route path="/cart">cart</Route>
+            <Route path="/cart">
+              <CartPage />
+            </Route>
             <Route path="/login">
               {user ? <Redirect to="/" /> : <Login />}
             </Route>
