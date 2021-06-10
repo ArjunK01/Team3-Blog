@@ -245,37 +245,6 @@ router.put("/comments/like/:id", (req, res) => {
   });
 });
 /**
- * Unlikes comment
- * Body is the comment id
- * @param id - the ID of the blog post being commented on
- * Sends 200 if like made succesffully
- */
- router.put("/comments/unlike/:id", (req, res) => {  
-  const { comment_id } = req.body;
-  db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
-  .then((doc) => {
-    if (doc.exists) {
-      curr_likes = doc.data().likes;
-    }
-    else {
-      res.sendStatus(404);
-    }
-    curr_likes = curr_likes - 1;
-
-    db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id)
-    .update({
-      likes: curr_likes,
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
-    });
-  });
-  res.sendStatus(200);
-});
-/**
  * Deletes a comment
  * ID of the comment in body
  * @param id - blog post whose comment is being deleted
