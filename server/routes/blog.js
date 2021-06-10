@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
-var admin = require('firebase-admin');
+const admin = require("firebase-admin");
+
 
 router.get("/", (req, res) => {
   res.send("test");
@@ -18,7 +19,16 @@ router.get("/get", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push({id: doc.id, ...doc.data()});
+        temp.push({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          image: doc.data().image,
+          likes: doc.data().likes,
+          city: doc.data().city,
+          isFeatured: doc.data().isFeatured,
+          dateCreated: doc.data().dateCreated.toDate()
+        });
       });
     })
     .then(() => {
@@ -92,11 +102,12 @@ router.post("/create", async(req, res) => {
 
 /**
  * Adds a like to the blog post
- * Increments the likes field, and updates the blog post
+ * If user has already liked, takes away their like
  * Sends status 200 if successful, 404 otherwise
  */
 router.put("/like", (req, res) => {
   const { blog_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("blogs").doc(blog_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -105,37 +116,15 @@ router.put("/like", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes + 1;
-
-    db.collection("blogs").doc(blog_id)
-    .update({
-      likes: curr_likes,
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
     });
-  });
-});
-/**
- * Takes a like from the blog post
- * Decrements the likes field, and updates the blog post
- * Sends status 200 if successful, 404 otherwise
- */
- router.put("/unlike", (req, res) => {
-  const { blog_id } = req.body;
-  db.collection("blogs").doc(blog_id).get()
-  .then((doc) => {
-    if (doc.exists) {
-      curr_likes = doc.data().likes;
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
     }
-    else {
-      res.sendStatus(404);
-    }
-    curr_likes = curr_likes - 1;
-
     db.collection("blogs").doc(blog_id)
     .update({
       likes: curr_likes,
