@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
+var admin = require('firebase-admin');
 
 router.get("/", (req, res) => {
   res.send("test");
@@ -95,7 +96,7 @@ router.post("/create", async(req, res) => {
  * Sends status 200 if successful, 404 otherwise
  */
 router.put("/like", (req, res) => {
-  const { blog_id } = req.body;
+  const { blog_id, user_id } = req.body;
   db.collection("blogs").doc(blog_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -115,6 +116,11 @@ router.put("/like", (req, res) => {
     })
     .catch((error) => {
       res.sendStatus(404);
+    });
+
+    var user_data = db.collection("user").doc(user_id);
+    var arrUnion = user_data.update({
+      likedBlogPosts: admin.firestore.FieldValue.arrayUnion(blog_id)
     });
   });
 });
@@ -165,8 +171,14 @@ router.get("/comments/get/:id", (req, res) => {
  * Sends 200 if comment made succesffully
  */
 router.post("/comments/create/:id", async(req, res) => {
-  await db.collection("blogs").doc(req.params.id).collection("comments").push(req.body);
-
+  db.collection("blogs").doc(req.params.id).collection("comments").add(req.body)
+  .then(docRef => {
+    console.log(docRef.id);
+    var user_data = db.collection("user").doc(req.body.user_id);
+    var arrUnion = user_data.update({
+      blogComments: admin.firestore.FieldValue.arrayUnion({"blog_id": req.params.id, "comment_id": docRef.id})
+    });
+  });
   res.sendStatus(200);
 });
 /**
@@ -175,7 +187,7 @@ router.post("/comments/create/:id", async(req, res) => {
  * @param id - the ID of the blog post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {  
+router.put("/comments/like/:id", (req, res) => {
   const { comment_id } = req.body;
   db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
@@ -202,13 +214,18 @@ router.put("/comments/like/:id", (req, res) => {
 });
 /**
  * Deletes a comment
- * ID of the comment in body
+ * ID of the comment and user in body and
  * @param id - blog post whose comment is being deleted
  */
-router.delete("/comments/delete/id:", async(req, res) => {
-  const { id } = req.body;
+router.delete("/comments/delete/:id", async(req, res) => {
+  const { id, user_id } = req.body;
 
   await db.collection("blogs").doc(req.params.id).collection("comments").doc(id).delete();
+
+  /*var user_data = db.collection("user").doc(user_id);
+  var arrUnion = user_data.update({
+    blogComments: admin.firestore.FieldValue.arrayRemove({"blog_id": req.params.id, "comment_id": id})
+  });*/
 
   res.sendStatus(200);
 });
@@ -217,7 +234,7 @@ router.delete("/comments/delete/id:", async(req, res) => {
  * All new comment information in body
  * @param id - the blog post whose comment is being edited
  */
-router.put("/comments/edit/id:", async(req, res) => {
+router.put("/comments/edit/:id", async(req, res) => {
   await db.collection("blogs").doc(req.params.id).collection("comments").doc(req.body.id).update(req.body);
 
   res.sendStatus(200);

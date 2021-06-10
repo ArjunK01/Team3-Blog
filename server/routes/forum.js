@@ -105,6 +105,11 @@ router.post("/create", async(req, res) => {
     dateCreated
   });
 
+  var user_data = db.collection("user").doc(req.body.user_id);
+  var arrUnion = user_data.update({
+    forumPosts: admin.firestore.FieldValue.arrayUnion(req.body.id)
+  });
+
   res.sendStatus(200);
 });
 
@@ -135,6 +140,11 @@ router.put("/like", (req, res) => {
     })
     .catch((error) => {
       res.sendStatus(404);
+    });
+
+    var user_data = db.collection("user").doc(user_id);
+    var arrUnion = user_data.update({
+      likedForumLikes: admin.firestore.FieldValue.arrayUnion(forum_id)
     });
   });
 });
@@ -185,7 +195,14 @@ router.get("/comments/get/:id", (req, res) => {
  * Sends 200 if comment made succesffully
  */
 router.post("/comments/create/:id", async(req, res) => {
-  await db.collection("forum").doc(req.params.id).collection("comments").push(req.body);
+  db.collection("forum").doc(req.params.id).collection("comments").add(req.body)
+  .then(docRef => {
+    console.log(docRef.id);
+    var user_data = db.collection("user").doc(req.body.user_id);
+    var arrUnion = user_data.update({
+      forumComments: admin.firestore.FieldValue.arrayUnion({"forum_id": req.params.id, "comment_id": docRef.id})
+    });
+  });
 
   res.sendStatus(200);
 });
@@ -195,7 +212,7 @@ router.post("/comments/create/:id", async(req, res) => {
  * @param id - the ID of the forum post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {  
+router.put("/comments/like/:id", (req, res) => {
   const { comment_id } = req.body;
   db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
