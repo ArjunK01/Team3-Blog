@@ -92,6 +92,7 @@ router.post("/create", async(req, res) => {
     title,
     content,
     likes,
+    isFeatured,
     topic
   } = req.body;
   const dateCreated = admin.firestore.Timestamp.now()
@@ -99,6 +100,7 @@ router.post("/create", async(req, res) => {
     title,
     content,
     likes,
+    isFeatured,
     topic,
     dateCreated
   });
