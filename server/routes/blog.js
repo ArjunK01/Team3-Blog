@@ -104,7 +104,36 @@ router.put("/like", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
+    curr_likes = curr_likes + 1;
+
+    db.collection("blogs").doc(blog_id)
+    .update({
+      likes: curr_likes,
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    });
+  });
+});
+/**
+ * Takes a like from the blog post
+ * Decrements the likes field, and updates the blog post
+ * Sends status 200 if successful, 404 otherwise
+ */
+ router.put("/unlike", (req, res) => {
+  const { blog_id } = req.body;
+  db.collection("blogs").doc(blog_id).get()
+  .then((doc) => {
+    if (doc.exists) {
+      curr_likes = doc.data().likes;
+    }
+    else {
+      res.sendStatus(404);
+    }
+    curr_likes = curr_likes - 1;
 
     db.collection("blogs").doc(blog_id)
     .update({
@@ -186,6 +215,37 @@ router.put("/comments/like/:id", (req, res) => {
       res.sendStatus(404);
     }
     curr_likes = curr_likes+1;
+
+    db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id)
+    .update({
+      likes: curr_likes,
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    });
+  });
+  res.sendStatus(200);
+});
+/**
+ * Unlikes comment
+ * Body is the comment id
+ * @param id - the ID of the blog post being commented on
+ * Sends 200 if like made succesffully
+ */
+ router.put("/comments/unlike/:id", (req, res) => {  
+  const { comment_id } = req.body;
+  db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
+  .then((doc) => {
+    if (doc.exists) {
+      curr_likes = doc.data().likes;
+    }
+    else {
+      res.sendStatus(404);
+    }
+    curr_likes = curr_likes - 1;
 
     db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
