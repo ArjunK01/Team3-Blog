@@ -19,6 +19,7 @@ router.get("/get", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
+        const dateToSend = doc.data().dateCreated.toDate();
         temp.push({
           id: doc.id,
           title: doc.data().title,
@@ -27,7 +28,7 @@ router.get("/get", (req, res) => {
           likes: doc.data().likes,
           city: doc.data().city,
           isFeatured: doc.data().isFeatured,
-          dateCreated: doc.data().dateCreated.toDate()
+          dateCreated: dateToSend
         });
       });
     })
