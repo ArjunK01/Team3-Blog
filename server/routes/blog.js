@@ -213,7 +213,8 @@ router.post("/comments/create/:id", async(req, res) => {
  * Sends 200 if like made succesffully
  */
 router.put("/comments/like/:id", (req, res) => {  
-  const { comment_id } = req.body;
+  const { comment_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -222,8 +223,15 @@ router.put("/comments/like/:id", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
       likes: curr_likes,
@@ -235,7 +243,6 @@ router.put("/comments/like/:id", (req, res) => {
       res.sendStatus(404);
     });
   });
-  res.sendStatus(200);
 });
 /**
  * Unlikes comment
