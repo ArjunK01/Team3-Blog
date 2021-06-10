@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/forum.css";
 import { Button } from "@material-ui/core";
-import FeaturedBlogCard from "./FeaturedBlogCard";
+import ForumCard from "./ForumCard";
 
 const Forum = () => {
   return (
@@ -32,7 +32,7 @@ const Forum = () => {
         <div className="right-container">
           <div className="featured-header">
             <div className="header-title">
-              <p className="featured-posts-title">Featured Posts</p>
+              <p className="featured-posts-title">All Posts</p>
             </div>
             <div className="header-filter-sort">
               <Button>Filter</Button>
@@ -41,9 +41,9 @@ const Forum = () => {
           </div>
           <hr style={{ marginTop: "-4px" }} />
           <div className="content-container">
-            <FeaturedBlogCard />
-            <FeaturedBlogCard />
-            <FeaturedBlogCard />
+            <ForumCard />
+            <ForumCard />
+            <ForumCard />
             {/* <BlogPost /> */}
           </div>
         </div>
