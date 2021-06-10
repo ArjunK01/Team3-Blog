@@ -19,7 +19,7 @@ const ApiProvider = ({ children }) => {
 
   const getForum = async () => {
     let returnedForum = await axios.get("http://localhost:8000/forum/get");
-    setBlog(returnedForum.data);
+    setForum(returnedForum.data);
   };
 
   const getMerch = async () => {

@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
-var admin = require('firebase-admin');
+const admin = require("firebase-admin");
+
 
 router.get("/", (req, res) => {
   res.send("test");
@@ -18,31 +19,113 @@ router.get("/get", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          image: doc.data().image,
+          likes: doc.data().likes,
+          city: doc.data().city,
+          isFeatured: doc.data().isFeatured,
+          createdDate: doc.data().createdDate.toDate()
+        });
       });
     })
     .then(() => {
       res.send(temp);
     });
 });
-
+/**
+ * Retrieve featured blogs from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const blogRef = db.collection("blogs");
+  let temp = [];
+  blogRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            image: doc.data().image,
+            likes: doc.data().likes,
+            city: doc.data().city,
+            isFeatured: doc.data().isFeatured,
+            createdDate: doc.data().createdDate.toDate()
+          });
+        }
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
+/**
+ * Retrieve blog by id from collection
+ */
+router.get("/get/:id", (req, res) => {
+  db.collection("blogs").doc(req.params.id).get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.send({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          image: doc.data().image,
+          likes: doc.data().likes,
+          city: doc.data().city,
+          isFeatured: doc.data().isFeatured,
+          createdDate: doc.data().createdDate.toDate()
+        });
+      }
+      else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    })
+});
 /**
  * Create a new blog post
  * Request body includes all blog information
  */
 router.post("/create", async(req, res) => {
-  await db.collection("blogs").doc(req.body.id).set(req.body);
+  const{
+    blog_id,
+    title,
+    content,
+    image,
+    likes,
+    city,
+    isFeatured
+  } = req.body;
+  const createdDate = admin.firestore.Timestamp.now()
+  await db.collection("blogs").doc(blog_id).set({
+    title,
+    content,
+    image,
+    likes,
+    city,
+    isFeatured,
+    createdDate
+  });
 
   res.sendStatus(200);
 });
 
 /**
  * Adds a like to the blog post
- * Increments the likes field, and updates the blog post
+ * If user has already liked, takes away their like
  * Sends status 200 if successful, 404 otherwise
  */
 router.put("/like", async(req, res) => {
   const { blog_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("blogs").doc(blog_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -51,8 +134,15 @@ router.put("/like", async(req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("blogs").doc(blog_id)
     .update({
       likes: curr_likes,
@@ -113,7 +203,7 @@ router.get("/comments/get/:id", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({id: doc.id, ...doc.data()});
       });
     })
     .then(() => {
@@ -143,8 +233,9 @@ router.post("/comments/create/:id", async(req, res) => {
  * @param id - the ID of the blog post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {
-  const { comment_id } = req.body;
+router.put("/comments/like/:id", (req, res) => {  
+  const { comment_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -153,8 +244,15 @@ router.put("/comments/like/:id", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("blogs").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
       likes: curr_likes,
@@ -166,7 +264,6 @@ router.put("/comments/like/:id", (req, res) => {
       res.sendStatus(404);
     });
   });
-  res.sendStatus(200);
 });
 /**
  * Deletes a comment
