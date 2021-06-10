@@ -8,14 +8,16 @@ router.get("/getall", (req, res) => {
   db.collection("merch").get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {
-      merchList.push({
-        id: doc.id,
-        title: doc.data().title,
-        price: doc.data().price,
-        description: doc.data().description,
-        images: doc.data().images,
-        stock: doc.data().stock
-      });
+      if(doc.data().isVisible == true){
+        merchList.push({
+          id: doc.id,
+          title: doc.data().title,
+          price: doc.data().price,
+          description: doc.data().description,
+          images: doc.data().images,
+          stock: doc.data().stock,
+        });
+      }
     });
     res.send(merchList)
   })
