@@ -45,9 +45,11 @@ const HomePage = () => {
         }}
       >
         <div className="blogHeader"> Featured Blog Posts</div>
-        {featuredList.map(b => {
-          return <FeaturedBlogCard b={b} />;
-        })}
+        <div className="cont" style={{ marginBottom: "128px" }}>
+          {featuredList.map(b => {
+            return <FeaturedBlogCard b={b} />;
+          })}
+        </div>
       </div>
     </div>
   );
