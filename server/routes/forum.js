@@ -16,7 +16,15 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push({id: doc.id, ...doc.data()});
+        temp.push({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          isFeatured: doc.data().isFeatured,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
       });
     })
     .then(() => {
@@ -30,7 +38,15 @@ router.get("/", (req, res) => {
   db.collection("forum").doc(req.params.id).get()
     .then((doc) => {
       if (doc.exists) {
-        res.send({id: doc.id, ...doc.data()});
+        res.send({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          isFeatured: doc.data().isFeatured,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
       }
       else {
         res.sendStatus(404);
@@ -52,7 +68,15 @@ router.get("/", (req, res) => {
     .then((resp) => {
       resp.forEach((doc) => {
         if (doc.isFeatured) {
-          temp.push({id: doc.id, ...doc.data()});
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            isFeatured: doc.data().isFeatured,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -72,8 +96,16 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        if (doc.topic === req.params.topic) {
-          temp.push(doc.data());
+        if (doc.data().topic === req.params.topic) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            isFeatured: doc.data().isFeatured,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -95,14 +127,14 @@ router.post("/create", async(req, res) => {
     isFeatured,
     topic
   } = req.body;
-  const dateCreated = admin.firestore.Timestamp.now()
+  const createdDate = admin.firestore.Timestamp.now()
   await db.collection("forum").doc(forum_id).set({
     title,
     content,
     likes,
     isFeatured,
     topic,
-    dateCreated
+    createdDate
   });
 
   var user_data = db.collection("user").doc(req.body.user_id);
@@ -120,7 +152,8 @@ router.post("/create", async(req, res) => {
  * Sends status 200 if successful, 404 otherwise
  */
 router.put("/like", (req, res) => {
-  const { forum_id } = req.body;
+  const { forum_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("forum").doc(forum_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -129,38 +162,15 @@ router.put("/like", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes + 1;
-
-    db.collection("forum").doc(forum_id)
-    .update({
-      likes: curr_likes,
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
     });
-  });
-});
-/**
- * Takes a like from the forum post
- * Forum id in the body
- * Decrements the likes field, and updates the forum post
- * Sends status 200 if successful, 404 otherwise
- */
-router.put("/unlike", (req, res) => {
-  const { forum_id } = req.body;
-  db.collection("forum").doc(forum_id).get()
-  .then((doc) => {
-    if (doc.exists) {
-      curr_likes = doc.data().likes;
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
     }
-    else {
-      res.sendStatus(404);
-    }
-    curr_likes = curr_likes - 1;
-
     db.collection("forum").doc(forum_id)
     .update({
       likes: curr_likes,
@@ -238,12 +248,13 @@ router.post("/comments/create/:id", async(req, res) => {
 });
 /**
  * Likes comment
- * Body is the comment id
+ * Body is the comment id and user id
  * @param id - the ID of the forum post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {
-  const { comment_id } = req.body;
+router.put("/comments/like/:id", (req, res) => {  
+  const { comment_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -252,8 +263,15 @@ router.put("/comments/like/:id", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes + 1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
       likes: curr_likes,
@@ -265,38 +283,6 @@ router.put("/comments/like/:id", (req, res) => {
       res.sendStatus(404);
     });
   });
-  res.sendStatus(200);
-});
-/**
- * Unlikes comment
- * Body is the comment id
- * @param id - the ID of the forum post being commented on
- * Sends 200 if unlike made succesffully
- */
- router.put("/comments/unlike/:id", (req, res) => {  
-  const { comment_id } = req.body;
-  db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id).get()
-  .then((doc) => {
-    if (doc.exists) {
-      curr_likes = doc.data().likes;
-    }
-    else {
-      res.sendStatus(404);
-    }
-    curr_likes = curr_likes - 1;
-
-    db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id)
-    .update({
-      likes: curr_likes,
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
-    });
-  });
-  res.sendStatus(200);
 });
 /**
  * Deletes a comment
