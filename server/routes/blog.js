@@ -72,7 +72,8 @@ router.post("/create", async(req, res) => {
     content,
     image,
     likes,
-    city
+    city,
+    isFeatured
   } = req.body;
   const dateCreated = admin.firestore.Timestamp.now()
   await db.collection("blogs").doc(blog_id).set({
@@ -81,6 +82,7 @@ router.post("/create", async(req, res) => {
     image,
     likes,
     city,
+    isFeatured,
     dateCreated
   });
 
