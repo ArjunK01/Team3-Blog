@@ -66,7 +66,7 @@ router.post("/create", async(req, res) => {
  * Increments the likes field, and updates the forum post
  * Sends status 200 if successful, 404 otherwise
  */
-router.put("/like", (req, res) => {
+router.put("/like", async(req, res) => {
   const { forum_id } = req.body;
   db.collection("forum").doc(forum_id).get()
   .then((doc) => {
@@ -82,17 +82,27 @@ router.put("/like", (req, res) => {
     .update({
       likes: curr_likes,
     })
-    .then(() => {
-      res.sendStatus(200);
-    })
     .catch((error) => {
       res.sendStatus(404);
     });
-
-    var user_data = db.collection("user").doc(user_id);
-    var arrUnion = user_data.update({
-      likedForumLikes: admin.firestore.FieldValue.arrayUnion(forum_id)
-    });
+  });
+  var user_data = db.collection("user").doc(user_id);
+  user_data.get()
+  .then((doc) => {
+    var data = doc.data();
+    if(data.forumLikes.includes(blog_id)){
+      var arrUnion = user_data.update({
+        forumLikes: admin.firestore.FieldValue.arrayRemove(forum_id)
+      });
+    }
+    else{
+      var arrUnion = user_data.update({
+        forumLikes: admin.firestore.FieldValue.arrayUnion(forum_id)
+      });
+    }
+  })
+  .then(() => {
+    res.sendStatus(200);
   });
 });
 /**
