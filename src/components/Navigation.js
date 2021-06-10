@@ -16,6 +16,7 @@ import Blogs from "./Blogs";
 import Forum from "./Forum";
 import Shop from "./Shop";
 import AdminPage from "./AdminPage";
+import FullBlog from "./FullBlog";
 
 const Navigation = () => {
   const { user } = useContext(AuthContext);
@@ -34,9 +35,13 @@ const Navigation = () => {
                 ? `${user.name}, ${user.email}, ${user.handle}, ${user.birthday}`
                 : "Not Signed In"}
             </Route>
+            <Route path="/blogs/:id">
+              <FullBlog />
+            </Route>
             <Route path="/blogs">
               <Blogs />
             </Route>
+            
             <Route path="/admin">
               {user ? (
                 user.isAdmin ? (

@@ -1,10 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/blogs.css";
 import FeaturedBlogCard from "./FeaturedBlogCard";
 import AllBlogCard from "./AllBlogCard";
 import { ApiContext } from "../context/ApiProvider";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import { getBindingIdentifiers } from "@babel/types";
 
 function getModalStyle() {
   const top = 50 + Math.random();
@@ -29,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Blogs = () => {
-  const { blog } = useContext(ApiContext);
+  const { blog, getBlog } = useContext(ApiContext);
   const [toggle, setToggle] = useState(false);
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("");
@@ -37,18 +40,80 @@ const Blogs = () => {
   const [title, setTitle] = useState("");
   const [featured, setFeatured] = useState(false);
   const [photo, setPhoto] = useState("");
+  const [update, setUpdate] = useState(null);
+  const [currentID, setCurrentID] = useState(null);
+  const [featuredList, setFeaturedList] = useState([]);
 
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 
-  const createBlog = () => {};
+  useEffect(() => {
+    console.log("Blogs", blog);
+    let temp = blog.filter(b => b.isFeatured);
+    setFeaturedList(temp);
+  }, [blog]);
+
+  const createBlog = async () => {
+    await axios({
+      method: "post",
+      url: "http://localhost:8000/blog/create",
+      data: {
+        blog_id: uuidv4(),
+        title,
+        content,
+        image: photo,
+        likes: [],
+        city,
+        isFeatured: featured
+      }
+    });
+    handleClose();
+    getBlog();
+  };
+
+  const updateBlog = b => {
+    setTitle(b.title);
+    setCity(b.city);
+    setContent(b.content);
+    setPhoto(b.image);
+    setFeatured(b.isFeatured);
+    setUpdate(true);
+    setCurrentID(b.id);
+    handleOpen();
+  };
+
+  const submitUpdate = async () => {
+    await axios({
+      method: "put",
+      url: "http://localhost:8000/blog/edit/",
+      data: {
+        id: currentID,
+        image: photo,
+        title,
+        content,
+        isFeatured: featured,
+        city
+      }
+    });
+    setTimeout(() => {
+      getBlog();
+    }, 300);
+    handleClose();
+  };
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setTitle("");
+    setCity("");
+    setContent("");
+    setPhoto("");
+    setFeatured("");
+    setUpdate(false);
+    setCurrentID("");
   };
   const body = (
     <div style={modalStyle} className={classes.paper}>
@@ -86,7 +151,12 @@ const Blogs = () => {
       >
         Featured
       </div>
-      <div className="submitAdd">Create Blog</div>
+      <div
+        className="submitAdd"
+        onClick={() => (update ? submitUpdate() : createBlog())}
+      >
+        {update ? "Update Blog" : "Create Blog"}
+      </div>
     </div>
   );
   return (
@@ -143,16 +213,14 @@ const Blogs = () => {
         <div className="blogContentContainer">
           {toggle ? (
             <div style={{ marginTop: "-12px" }}>
-              <FeaturedBlogCard />
-              <FeaturedBlogCard />{" "}
+              {featuredList.map(b => (
+                <FeaturedBlogCard updateBlog={updateBlog} b={b}/>
+              ))}
             </div>
           ) : (
             <div className="allBlogContainer">
-              <AllBlogCard />
-              <AllBlogCard />
-              <AllBlogCard />
-              <AllBlogCard />
-              <AllBlogCard />
+              {blog &&
+                blog.map(b => <AllBlogCard updateBlog={updateBlog} b={b} />)}
             </div>
           )}
         </div>
