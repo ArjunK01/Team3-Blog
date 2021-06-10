@@ -16,7 +16,15 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push({id: doc.id, ...doc.data()});
+        temp.push({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          isFeatured: doc.data().isFeatured,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
       });
     })
     .then(() => {
@@ -30,7 +38,15 @@ router.get("/", (req, res) => {
   db.collection("forum").doc(req.params.id).get()
     .then((doc) => {
       if (doc.exists) {
-        res.send({id: doc.id, ...doc.data()});
+        res.send({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          isFeatured: doc.data().isFeatured,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
       }
       else {
         res.sendStatus(404);
@@ -52,7 +68,15 @@ router.get("/", (req, res) => {
     .then((resp) => {
       resp.forEach((doc) => {
         if (doc.isFeatured) {
-          temp.push({id: doc.id, ...doc.data()});
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            isFeatured: doc.data().isFeatured,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -72,8 +96,16 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        if (doc.topic === req.params.topic) {
-          temp.push(doc.data());
+        if (doc.data().topic === req.params.topic) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            isFeatured: doc.data().isFeatured,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -95,14 +127,14 @@ router.post("/create", async(req, res) => {
     isFeatured,
     topic
   } = req.body;
-  const dateCreated = admin.firestore.Timestamp.now()
+  const createdDate = admin.firestore.Timestamp.now()
   await db.collection("forum").doc(forum_id).set({
     title,
     content,
     likes,
     isFeatured,
     topic,
-    dateCreated
+    createdDate
   });
 
   res.sendStatus(200);
