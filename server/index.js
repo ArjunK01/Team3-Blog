@@ -12,7 +12,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
 const merchRouter = require("./routes/merch");
 const userRouter = require("./routes/user");
 const blogRouter = require("./routes/blog");
@@ -24,7 +23,7 @@ app.use("/blog", blogRouter);
 app.use("/forum", forumRouter);
 
 app.listen(PORT, () => {
-  console.log("Listening");
+  console.log('listening');
 });
 
 module.exports = app;

@@ -1,3 +1,4 @@
+/* __________________ SHOP COMPONENT STYLING ________________*/
 .shop-page-title {
   text-transform: uppercase;
   font-size: 24px;
@@ -21,17 +22,30 @@
 }
 
 .header-filter-sort {
+  padding: 20px;
   display: flex;
   /* flex-direction: row; */
   justify-content: center;
   /* justify-content: flex-end; */
   /* align-items: flex-end; */
 }
+.conditional-filter-sort {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-items: flex-start; */
+}
 
 .sort-select {
   display: flex;
   justify-content: center;
   padding: 10px;
+}
+
+.admin-edit-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .product-count {
@@ -43,6 +57,11 @@
   align-items: center;
 }
 
+.reset-padding {
+  padding: 0;
+  margin: 0;
+}
+/* __________________ PRODUCT COMPONENT STYLING ________________*/
 .products-container {
   display: flex;
   justify-content: center;
@@ -51,8 +70,8 @@
 
 .product-card {
   background: var(--light-gray);
-  height: 250px;
-  width: 250px;
+  height: 275px;
+  width: 275px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,10 +89,15 @@
 }
 
 .product-content {
-  /* padding-top: 15px; */
+  padding-top: 15px;
+  width: 80%;
 }
 
 .product-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .product-information {
@@ -87,12 +111,43 @@
 .product-price {
   font-size: 20px;
 }
-
-.reset-padding {
-  padding: 0;
-  margin: 0;
+.stock-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
+.product-stock,
+.product-desc {
+  font-size: 15px;
+}
+
+.bottom-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.add-to-cart-btn {
+  /* display: flex; */
+  /* justify-content: flex-end; */
+  /* align-items: center; */
+  color: var(--light-blue);
+}
+.delete-product-btn {
+  color: rgb(255, 139, 139);
+}
+.delete-product-btn:hover {
+  color: rgb(178, 98, 98);
+}
+
+.add-to-cart-btn:hover {
+  color: var(--dark-blue);
+  transition: all 0.25s ease;
+}
+
+/* __________________ MOBILE-FRIENDLY STYLING ________________*/
 @media only screen and (max-width: 800px) {
   .header-tab-selection {
     flex-direction: column;

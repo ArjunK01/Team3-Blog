@@ -5,6 +5,7 @@
   opacity: 0.8;
   letter-spacing: 0.5px;
   margin-top: 32px;
+  margin-bottom: 6px;
 }
 
 .blogChoice {
@@ -21,6 +22,7 @@
 .blogRight:hover {
   color: black;
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .blogMain {
@@ -56,6 +58,7 @@
 .featuredBlogCard:hover {
   background-color: #f3f4f6;
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .featuredBlogCardImageContainer {
@@ -164,12 +167,16 @@
   margin-bottom: -2px;
 }
 
+.blogContentContainer {
+  margin-top: -12px;
+}
 .allBlogContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 5%;
+  margin-top: 24px;
   row-gap: 32px;
-  margin-bottom: 64px;
+  margin-bottom: 86px;
 }
 
 .allBlogCardContainer {
@@ -186,6 +193,7 @@
 .allBlogCardContainer:hover {
   cursor: pointer;
   background-color: var(--light-gray);
+  transition: all 0.25s ease;
 }
 
 .imageContainer {
@@ -249,4 +257,81 @@
 .allCardBottom {
   display: flex;
   justify-content: space-between;
+}
+
+@media only screen and (max-width: 800px) {
+  .allBlogContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .imageContainer {
+    padding-top: 23.25%;
+    overflow: hidden;
+  }
+  .featuredBlogCardImageContainer {
+    display: none;
+  }
+  .allContent {
+    -webkit-line-clamp: 10;
+  }
+}
+
+.searchForm {
+  margin-top: 20px;
+  display: flex;
+  margin-bottom: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchForm input {
+  width: 500px;
+}
+
+.addBlogBtn {
+  margin-left: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--dark-blue);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: -6px;
+}
+
+.addBlogBtn:hover {
+  color: var(--dark-blue);
+  background-color: var(--light-blue);
+}
+
+.submitAdd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-radius: 3px;
+  padding: 6px 0px;
+  cursor: pointer;
+}
+
+.featuredBtn {
+  display: flex;
+  border: 1px solid var(--dark-blue);
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  padding: 6px 0px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.submitAdd:hover {
+  background-color: var(--dark-gray);
 }

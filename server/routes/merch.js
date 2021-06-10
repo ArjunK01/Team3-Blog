@@ -8,14 +8,16 @@ router.get("/getall", (req, res) => {
   db.collection("merch").get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {
-      merchList.push({
-        id: doc.id,
-        title: doc.data().title,
-        price: doc.data().price,
-        description: doc.data().description,
-        images: doc.data().images,
-        stock: doc.data().stock
-      });
+      if(doc.data().isVisible == true){
+        merchList.push({
+          id: doc.id,
+          title: doc.data().title,
+          price: doc.data().price,
+          description: doc.data().description,
+          images: doc.data().images,
+          stock: doc.data().stock,
+        });
+      }
     });
     res.send(merchList)
   })
@@ -114,7 +116,7 @@ router.put("/purchase", (req, res) => {
 //returns all remaining merch
 router.delete("/delete", async (req, res) => {
   const { merch_id } = req.body;
-  db.collection("merch").doc(merch_id).delete();
+  db.collection("merch").doc(merch_id).update({"isVisible": false});
 
   let merchList = [];
   db.collection("merch").get()
@@ -147,12 +149,15 @@ router.post("/create", async (req, res) => {
     stock,
   } = req.body;
 
+  var isVisible = true;
+
   await db.collection("merch").add({
     title,
     images,
     description,
     price,
     stock,
+    isVisible
   });
 
   let merchList = [];

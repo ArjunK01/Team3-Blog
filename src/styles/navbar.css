@@ -3,7 +3,7 @@
 }
 
 .navWidth {
-  max-width: 1260px;
+  /* max-width: 1260px; */
   display: flex;
 
   justify-content: space-between;
@@ -76,4 +76,39 @@
 
 .loginLink:hover .loginLinkText {
   color: var(--dark-blue);
+}
+
+.signOut {
+  cursor: pointer;
+  align-self: flex-end;
+}
+.signOut:hover {
+  color: var(--light-blue);
+}
+
+.signedIn {
+  display: flex;
+}
+
+@media only screen and (max-width: 800px) {
+  .navWidth {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+  }
+  .navCenterLogo {
+    font-size: 100%;
+  }
+
+  /* .navLeft, */
+  .links {
+    margin-top: 45px;
+    margin-bottom: 20px;
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -64,3 +64,13 @@
 }
 /* _______________ */
 /* _________________________________________ */
+
+@media only screen and (max-width: 1050px) {
+  .forum-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .left-container {
+    background: var(--light-gray);
+  }
+}
