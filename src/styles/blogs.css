@@ -49,7 +49,6 @@
   height: 250px;
   display: flex;
   margin-top: 32px;
-  margin-bottom: 32px;
   box-shadow: 0 2px 3px 0 hsla(0, 0%, 0%, 0.1);
   border-radius: 4px;
   overflow: hidden;
@@ -169,6 +168,7 @@
 
 .blogContentContainer {
   margin-top: -12px;
+  margin-bottom: 128px;
 }
 .allBlogContainer {
   display: grid;
