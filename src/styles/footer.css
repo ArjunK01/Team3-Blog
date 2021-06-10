@@ -21,7 +21,8 @@
 
 .footer .social {
   transform: scale(0.8);
-  padding-top: 10px;
+  padding-top: 3px;
+  padding-bottom: 5px;
 }
 
 .footer-social-spacing > * {
