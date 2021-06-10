@@ -19,7 +19,6 @@ router.get("/get", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        const dateToSend = doc.data().dateCreated.toDate();
         temp.push({
           id: doc.id,
           title: doc.data().title,
@@ -28,7 +27,7 @@ router.get("/get", (req, res) => {
           likes: doc.data().likes,
           city: doc.data().city,
           isFeatured: doc.data().isFeatured,
-          dateCreated: dateToSend
+          createdDate: doc.data().createdDate.toDate()
         });
       });
     })
@@ -48,7 +47,16 @@ router.get("/get", (req, res) => {
     .then((resp) => {
       resp.forEach((doc) => {
         if (doc.isFeatured) {
-          temp.push({id: doc.id, ...doc.data()});
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            image: doc.data().image,
+            likes: doc.data().likes,
+            city: doc.data().city,
+            isFeatured: doc.data().isFeatured,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -63,7 +71,16 @@ router.get("/get/:id", (req, res) => {
   db.collection("blogs").doc(req.params.id).get()
     .then((doc) => {
       if (doc.exists) {
-        res.send({id: doc.id, ...doc.data()});
+        res.send({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          image: doc.data().image,
+          likes: doc.data().likes,
+          city: doc.data().city,
+          isFeatured: doc.data().isFeatured,
+          createdDate: doc.data().createdDate.toDate()
+        });
       }
       else {
         res.sendStatus(404);
@@ -87,7 +104,7 @@ router.post("/create", async(req, res) => {
     city,
     isFeatured
   } = req.body;
-  const dateCreated = admin.firestore.Timestamp.now()
+  const createdDate = admin.firestore.Timestamp.now()
   await db.collection("blogs").doc(blog_id).set({
     title,
     content,
@@ -95,7 +112,7 @@ router.post("/create", async(req, res) => {
     likes,
     city,
     isFeatured,
-    dateCreated
+    createdDate
   });
 
   res.sendStatus(200);
