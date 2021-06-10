@@ -21,7 +21,6 @@ router.get("/", (req, res) => {
           title: doc.data().title,
           content: doc.data().content,
           likes: doc.data().likes,
-          isFeatured: doc.data().isFeatured,
           topic: doc.data().topic,
           createdDate: doc.data().createdDate.toDate()
         });
@@ -43,7 +42,6 @@ router.get("/", (req, res) => {
           title: doc.data().title,
           content: doc.data().content,
           likes: doc.data().likes,
-          isFeatured: doc.data().isFeatured,
           topic: doc.data().topic,
           createdDate: doc.data().createdDate.toDate()
         });
@@ -73,7 +71,6 @@ router.get("/", (req, res) => {
             title: doc.data().title,
             content: doc.data().content,
             likes: doc.data().likes,
-            isFeatured: doc.data().isFeatured,
             topic: doc.data().topic,
             createdDate: doc.data().createdDate.toDate()
           });
@@ -102,7 +99,6 @@ router.get("/", (req, res) => {
             title: doc.data().title,
             content: doc.data().content,
             likes: doc.data().likes,
-            isFeatured: doc.data().isFeatured,
             topic: doc.data().topic,
             createdDate: doc.data().createdDate.toDate()
           });
@@ -124,7 +120,6 @@ router.post("/create", async(req, res) => {
     title,
     content,
     likes,
-    isFeatured,
     topic
   } = req.body;
   const createdDate = admin.firestore.Timestamp.now()
@@ -132,7 +127,6 @@ router.post("/create", async(req, res) => {
     title,
     content,
     likes,
-    isFeatured,
     topic,
     createdDate
   });
