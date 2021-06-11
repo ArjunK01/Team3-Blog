@@ -1,39 +1,77 @@
+import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartProvider";
+import { AuthContext } from "../context/AuthProvider";
 import image from "../images/shirt.jpeg";
-import React, { useState, useEffect, useContext } from "react";
 import "../styles/cart.css";
-import Product from "./Product";
+import CartItem from "./CartItem";
+import axios from "axios";
 
 const CartPage = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
+  const { user } = useContext(AuthContext);
+  const [total, setTotal] = useState(0);
+  const [address, setAddress] = useState("");
+  const [cc, setCC] = useState("");
 
+  const checkout = async () => {
+    if (cart.length === 0) return;
+    let merch = [];
+    cart.forEach(item => {
+      merch.push({ merch_id: item.id, quantity: 1 });
+    });
+    await axios({
+      method: "put",
+      url: "http://localhost:8000/merch/purchase",
+      headers: {},
+      data: {
+        user_id: user.id,
+        merch
+      }
+    });
+    setCart([]);
+  };
+
+  useEffect(() => {
+    setTotal(0);
+    cart.forEach(item => setTotal(t => t + parseInt(item.price)));
+  }, [cart]);
   return (
-    <div>
-      <div className="cart-page-title">Cart</div>
-      <div className="cart-container">
-        <div className="cart-header"></div>
-        {/* Number of products in the user's cart */}
-        <h4 className="product-count">
-          You have {cart.length} product(s) in cart.
-        </h4>
-        <div className="products-container">
+    <div className="cart">
+      <div className="cartHeader">Cart</div>
+      <div className="cartPageContainer">
+        <div className="cartList">
           {cart &&
-            cart.map((item) => {
-              return (
-                <p>
-                  <img
-                    style={{ height: "100px", width: "100px" }}
-                    src={image}
-                  />
-                  <Product
-                    title={item.title}
-                    price={item.price}
-                    description={item.description}
-                    src={image}
-                  />
-                </p>
-              );
+            cart.map((item, i) => {
+              return <CartItem setTotal={setTotal} item={item} key={i} />;
             })}
+        </div>
+        <div className="sidebar">
+          <div
+            className="checkoutHeader"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            Checkout
+          </div>
+          <div className="checkoutTotal">Total: ${total}</div>
+          <input
+            placeholder="Address"
+            value={address}
+            onChange={e => setAddress(e.target.value)}
+            type="text"
+            class="form-control authInput mb-2"
+          />
+          <input
+            placeholder="Credit Card"
+            value={cc}
+            onChange={e => setCC(e.target.value)}
+            type="text"
+            class="form-control authInput mb-2"
+          />
+          {user && (
+            <div className="checkoutBtn" onClick={() => checkout()}>
+              Checkout
+            </div>
+          )}
         </div>
       </div>
     </div>
