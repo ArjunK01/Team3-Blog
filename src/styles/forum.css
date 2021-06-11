@@ -4,6 +4,7 @@
   flex-direction: row;
   /* align-items: center; */
   padding-top: 20px;
+  padding-bottom: 4rem;
 }
 .forum-page-title {
   text-transform: uppercase;
