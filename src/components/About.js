@@ -5,7 +5,9 @@ import camille from "../images/camille.png";
 const About = () => {
   return (
     <div>
-      <h2 style={{ padding: "20px" }}>ABOUT US</h2>
+      <h2 className="temptemp" >
+        ABOUT US
+      </h2>
       <div className="aboutContainer">
         <div className="aboutHeroContainer">
           <img className="heroImg" src={camille} />

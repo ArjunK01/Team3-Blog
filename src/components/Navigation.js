@@ -33,7 +33,7 @@ const Navigation = () => {
               <About />
             </Route>
             <Route path="/user/:id">
-              {user ? <UserProfile /> : "Not Signed In"}
+              <UserProfile />
             </Route>
             <Route path="/blogs/:id">
               <FullBlog />
