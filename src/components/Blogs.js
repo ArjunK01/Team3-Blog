@@ -224,7 +224,9 @@ const Blogs = () => {
           ) : (
             <div className="allBlogContainer">
               {blog &&
-                blog.map(b => <AllBlogCard updateBlog={updateBlog} b={b} />)}
+                blog.map((b, i) => (
+                  <AllBlogCard key={i} updateBlog={updateBlog} b={b} />
+                ))}
             </div>
           )}
         </div>

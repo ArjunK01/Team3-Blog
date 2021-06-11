@@ -29,6 +29,7 @@ const ApiProvider = ({ children }) => {
 
   const getUsers = async () => {
     let returnedUsers = await axios.get("http://localhost:8000/user/getall");
+    console.log("Users: ", returnedUsers.data);
     setUsers(returnedUsers.data);
   };
 

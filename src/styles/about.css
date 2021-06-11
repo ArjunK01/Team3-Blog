@@ -1,13 +1,22 @@
 .aboutContainer {
   display: flex;
-  margin-top: 20px;
+  margin-top: 32px;
   margin-bottom: 70px;
   overflow: hidden;
 }
 
 .aboutFormContainer {
   min-width: 550px;
-  padding: 32px 32px;
+}
+
+.temptemp {
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+  margin-top: 32px;
+  margin-bottom: 6px;
 }
 
 .aboutHeroContainer {

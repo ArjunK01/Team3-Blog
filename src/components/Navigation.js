@@ -18,6 +18,7 @@ import Shop from "./Shop";
 import AdminPage from "./AdminPage";
 import FullBlog from "./FullBlog";
 import CartPage from "./CartPage";
+import UserProfile from "./UserProfile";
 
 const Navigation = () => {
   const { user } = useContext(AuthContext);
@@ -31,10 +32,8 @@ const Navigation = () => {
             <Route path="/about">
               <About />
             </Route>
-            <Route path="/user">
-              {user
-                ? `${user.name}, ${user.email}, ${user.handle}, ${user.birthday}`
-                : "Not Signed In"}
+            <Route path="/user/:id">
+              <UserProfile />
             </Route>
             <Route path="/blogs/:id">
               <FullBlog />

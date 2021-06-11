@@ -348,6 +348,11 @@
   margin-bottom: 6px;
 }
 
+.commentUserheader{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .commentTop {
   display: flex;
   justify-content: space-between;

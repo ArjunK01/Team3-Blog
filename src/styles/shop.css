@@ -27,7 +27,7 @@
   align-items: flex-start;
 }
 
-.header-filter-sort {
+.shop-header-filter-sort {
   padding: 20px;
   display: flex;
   /* flex-direction: row; */
@@ -68,13 +68,13 @@
   margin: 0;
 }
 /* __________________ PRODUCT COMPONENT STYLING ________________*/
-.products-container {
+.shop-products-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.product-card {
+.shop-product-card {
   background: var(--light-gray);
   padding-bottom: 10px;
   height: 275px;
@@ -170,7 +170,7 @@
   .product-count {
     justify-content: center;
   }
-  .header-filter-sort {
+  .shop-header-filter-sort {
     display: flex;
     flex-direction: column;
     padding: 10px;

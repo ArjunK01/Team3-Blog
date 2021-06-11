@@ -1,14 +1,20 @@
 .post-container {
   padding: 10px;
-  margin: 10px 0px;
-  background: #e0e0e2;
-  border: 2px solid #fff;
+  background: var(--light-gray);
+  cursor: pointer;
+  border-radius: 3px;
+  margin-bottom: 10px;
   /* width: 40%; */
 }
 
+.post-container div {
+  font-weight: bold;
+  font-size: 20px;
+  padding: 0;
+}
+
 .post-container:hover {
-  background: white;
-  transition: all 0.5 ease;
+  background: var(--light-blue);
 }
 
 .blog-top-section {
