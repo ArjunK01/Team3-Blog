@@ -37,8 +37,12 @@ router.get("/get/:id", async (req, res) => {
 
   //get merch data
   for(let i = 0; i < user_data.purchasedMerch.length; i++){
-    let merch_data = await db.collection("merch").doc(user_data.purchasedMerch[i]).get()
-    user_data.purchasedMerch[i] = { id: merch_data.id, ...merch_data.data()};
+    let merch_list = user_data.purchasedMerch[i];
+    for(let j = 0; j < merch_list.purchase.length; j++){
+      let merch_id = merch_list.purchase[j].merch_id;
+      let merch_data = await db.collection("merch").doc(merch_id).get()
+      user_data.purchasedMerch[i].purchase[j].merch_id = { id: merch_data.id, ...merch_data.data()};
+    }
   }
 
   //get liked blog posts
