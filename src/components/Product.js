@@ -22,8 +22,6 @@ const Product = ({
   description,
   isEdit,
   productID,
-  getMerch
-
 }) => {
   const { getMerch } = useContext(ApiContext);
 
@@ -49,8 +47,8 @@ const Product = ({
       method: "delete",
       url: "http://localhost:8000/merch/delete",
       data: {
-        merch_id: productID
-      }
+        merch_id: productID,
+      },
     });
     setTimeout(() => getMerch(), 200);
   };
@@ -99,8 +97,9 @@ const Product = ({
           <div className="stock-container">
             <p className="product-stock reset-padding">
               {stock <= 0 ? (
-                <div>
-                  <strong style={{ color: "red" }}>Out of stock</strong>
+                <div style={{ color: "red" }}>
+                  {/* <strong style={{ color: "red" }}>Out of stock</strong> */}
+                  Out of stock
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "row" }}>
