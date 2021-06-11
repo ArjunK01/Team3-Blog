@@ -1,31 +1,52 @@
-import React from "react";
-import image from "../images/beach.jpg";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { ApiContext } from "../context/ApiProvider";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import { Comment } from "./Comment";
+import CommentForm from "./CommentForm";
 
-const ForumCard = () => {
+const ForumCard = ({ f }) => {
+  const { user } = useContext(AuthContext);
+  const { getForum } = useContext(ApiContext);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (f) {
+      let temp = f.createdDate
+        .toString()
+        .substring(0, 10)
+        .split("-");
+      temp.push(temp.shift());
+      setDate(temp);
+    }
+  }, [f]);
+
+  const deleteForum = async () => {
+    await axios({
+      method: "delete",
+      url: "http://localhost:8000/forum/delete/",
+      data: {
+        id: f.id
+      }
+    });
+    setTimeout(() => {
+      getForum();
+    }, 200);
+  };
+
+  const [date, setDate] = useState("");
   return (
     <div class="forumCard">
-      <div className="forumCardInfo">
-        <div className="date">Tuesday, June 11</div>
-        <div className="title">My trip to Miami Beach</div>
-        <p className="contentPreview">
-          "Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
-          ab illo inventore veritatis et quasi architecto beatae vitae dicta
-          sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-          aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-          qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
-          dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-          quia non numquam eius modi tempora incidunt ut labore et d"Sed ut
-          perspiciatis unde omnis iste natus error sit voluptatem accusantium
-          doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-          inventore veritatis et quasi architecto beatae vitae dicta sunt
-          explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut
-          odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-          voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum
-          quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam
-          eius modi tempora incidunt ut labore et d
-        </p>
+      <div 
+        className="forumCardInfo"
+        onClick={() => history.push("/forum/" + f.id)}
+      >
+        <div className="date">{date && date.join("/")}</div>
+        <div className="title">{f.title}</div>
+        <p className="contentPreview">{f.content}</p>
         <div className="forumCardBottom">
+          <p className="channel">#{f.topic}</p>
           <div className="bottomRight">
             <div className="icons">
               <div className="likes">
@@ -43,27 +64,31 @@ const ForumCard = () => {
                     />
                   </svg>
                 </div>
-                <p className="likesNumber">23</p>
-              </div>
-              <div className="comments">
-                <div className="likesIcon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <p className="likesNumber">23</p>
+                <p className="likesNumber">{f.likes.length}</p>
               </div>
             </div>
-            <div className="readMore">Read More</div>
+            <div className="featuredBlogCardImageContainer">
+              {user && user.isAdmin && (
+                <div className="blogIconsContainer">
+                  <div className="icons pencilIcon" onClick={() => deleteForum()}> Delete
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M20 12H4"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

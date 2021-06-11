@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
+var admin = require("firebase-admin");
 
 router.get("/", (req, res) => {
   res.send("test");
@@ -115,25 +116,20 @@ router.get("/", (req, res) => {
  * Request body includes all forum information
  */
 router.post("/create", async(req, res) => {
-  const{
-    forum_id,
-    title,
-    content,
-    likes,
-    topic
-  } = req.body;
   const createdDate = admin.firestore.Timestamp.now()
-  await db.collection("forum").doc(forum_id).set({
-    title,
-    content,
-    likes,
-    topic,
+  await db.collection("forum").doc(req.body.forum_id).set({
+    title: req.body.title,
+    content: req.body.content,
+    likes: req.body.likes,
+    topic: req.body.topic,
     createdDate
+  }).catch((error) => {
+    res.sendStatus(404);
   });
 
   var user_data = db.collection("user").doc(req.body.user_id);
   var arrUnion = user_data.update({
-    forumPosts: admin.firestore.FieldValue.arrayUnion(req.body.id)
+    forumPosts: admin.firestore.FieldValue.arrayUnion(req.body.forum_id)
   });
 
   res.sendStatus(200);
