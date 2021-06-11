@@ -151,13 +151,10 @@ const Forum = () => {
               <li className="temp-style">#sunscreen</li>
             </ul>
           </div>
-          <p className="sidebar-titles" 
+          <p className="sidebar-titles"
              onClick={handleOpen}
           >
-            Create new channel
-          </p>
-          <p className="sidebar-titles">
-            FAQ
+            Create New  Post
           </p>
         </div>
         <div className="right-container">
