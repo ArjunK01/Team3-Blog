@@ -13,7 +13,7 @@ const HomePage = () => {
   const [featuredList, setFeaturedList] = useState([]);
   useEffect(() => {
     console.log("Blogs", blog);
-    let temp = blog.filter(b => b.isFeatured);
+    let temp = blog.filter((b) => b.isFeatured);
     setFeaturedList(temp);
   }, [blog]);
 
@@ -31,7 +31,7 @@ const HomePage = () => {
               height: window.innerHeight * 0.85, // sets height to  the screen
               left: 0,
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
             }}
           ></img>
         </div>
@@ -41,12 +41,12 @@ const HomePage = () => {
           position: "absolute",
           left: windowWidth / 7,
           right: windowWidth / 7,
-          top: window.innerHeight * 0.97
+          top: window.innerHeight * 0.97,
         }}
       >
         <div className="blogHeader"> Featured Blog Posts</div>
         <div className="cont" style={{ marginBottom: "128px" }}>
-          {featuredList.map(b => {
+          {featuredList.map((b) => {
             return <FeaturedBlogCard b={b} />;
           })}
         </div>
