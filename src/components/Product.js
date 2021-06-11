@@ -95,8 +95,9 @@ const Product = ({
           <div className="stock-container">
             <p className="product-stock reset-padding">
               {stock <= 0 ? (
-                <div>
-                  <strong style={{ color: "red" }}>Out of stock</strong>
+                <div style={{ color: "red" }}>
+                  {/* <strong style={{ color: "red" }}>Out of stock</strong> */}
+                  Out of stock
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "row" }}>
