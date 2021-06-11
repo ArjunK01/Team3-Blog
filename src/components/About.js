@@ -4,7 +4,7 @@ import camille from "../images/camille.png";
 
 const About = () => {
   return (
-    <div>
+    <div className="bottom-padding">
       <h2 className="temptemp" >
         ABOUT US
       </h2>
