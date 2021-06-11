@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { setDefaultHandler } from "workbox-routing";
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
+import { useHistory } from "react-router-dom";
 
 export const Comment = ({
   comment,
@@ -14,6 +15,7 @@ export const Comment = ({
 }) => {
   const [author, setAuthor] = useState("");
   const { user } = useContext(AuthContext);
+  const history = useHistory();
 
   useEffect(async () => {
     let temp = await axios.get(
@@ -45,6 +47,9 @@ export const Comment = ({
     <div
       className="commentContainer"
       style={{ backgroundColor: i % 2 === 0 ? "#F3F4F6" : "white" }}
+      onClick={() =>
+        comment.user_id && history.push("/user/" + comment.user_id)
+      }
     >
       <div className="commentTop">
         <div className="commentUser">
