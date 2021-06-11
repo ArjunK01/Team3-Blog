@@ -60,7 +60,7 @@ const Shop = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newStock, setNewStock] = useState(0);
   const [newPrice, setNewPrice] = useState(0);
-  const [newIsVisible, setNewIsVisible] = useState(true);
+  // const [newIsVisible, setNewIsVisible] = useState(true);
   const [newImages, setNewImages] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
@@ -72,7 +72,7 @@ const Shop = () => {
         title: newTitle,
         stock: newStock,
         price: newPrice,
-        isVisible: newIsVisible,
+        isVisible: true,
         images: newImages,
         description: newDescription,
       },
@@ -106,9 +106,9 @@ const Shop = () => {
               transition: "all 0.25s ease",
             }}
           />
-          <div className="header-filter-sort">
+          <div className="shop-header-filter-sort">
             <div className="shop-subheader-filter-btns">
-              <Button
+              {/* <Button
                 style={{
                   background: "var(--light-gray)",
                   marginRight: "1rem",
@@ -119,7 +119,7 @@ const Shop = () => {
                 }}
               >
                 Toggle All
-              </Button>
+              </Button> */}
               <Button
                 style={{
                   boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
@@ -129,17 +129,17 @@ const Shop = () => {
                   setFilterToggle(!filterToggle);
                 }}
               >
-                Filter
+                Filter in stock
               </Button>
 
-              {filterToggle && (
+              {/* {filterToggle && (
                 <div className="sort-select">
                   <select style={{ padding: "5px", textAlign: "center" }}>
                     <option selected="selected">All Items</option>
                     <option>Hats</option>
                   </select>
                 </div>
-              )}
+              )} */}
 
               <Button
                 style={{ boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)" }}
@@ -147,9 +147,9 @@ const Shop = () => {
                   setSortToggle(!sortToggle);
                 }}
               >
-                Sort
+                Sort price
               </Button>
-              {sortToggle && (
+              {/* {sortToggle && (
                 <div className="sort-select">
                   <select style={{ padding: "5px" }}>
                     <option selected="selected">Best Selling</option>
@@ -159,7 +159,7 @@ const Shop = () => {
                     <option>Price (high to low)</option>
                   </select>
                 </div>
-              )}
+              )} */}
             </div>
             {user && (
               <div className="admin-edit-buttons-container">
@@ -245,7 +245,7 @@ const Shop = () => {
                   }}
                 />
                 {/* INPUT -- IS_VISIBLE */}
-                <FormControlLabel
+                {/* <FormControlLabel
                   margin="dense"
                   control={
                     <Checkbox
@@ -258,7 +258,7 @@ const Shop = () => {
                     />
                   }
                   label="Show in store?"
-                />
+                /> */}
                 {/* INPUT -- IMAGES */}
                 <TextField
                   // autoFocus
@@ -301,7 +301,8 @@ const Shop = () => {
                     // call createProduct() to database via axios
                     createProduct();
                     // refresh();
-                    handleClose();
+                    setTimeout(() => handleClose(), 200);
+                    // handleClose();
                   }}
                   color="primary"
                   // style={{ background: "#6fbd6f" }}
@@ -324,7 +325,7 @@ const Shop = () => {
             Editing...
           </p>
         )} */}
-        <div className="products-container">
+        <div className="shop-products-container">
           {/* map through merch products from database */}
           {merch &&
             merch.map((m) => {
@@ -337,7 +338,6 @@ const Shop = () => {
                   description={m.description}
                   isEdit={isEdit}
                   productID={m.id}
-                  getMerch={getMerch}
                 />
               );
             })}
