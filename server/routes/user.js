@@ -14,6 +14,7 @@ router.get("/getall", (req, res) => {
         isAdmin: doc.data().isAdmin,
         email: doc.data().email,
         handle: doc.data().handle,
+        birthday: doc.data().birthday,
       });
     });
     res.send(userList)
