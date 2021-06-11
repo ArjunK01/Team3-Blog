@@ -1,8 +1,5 @@
 import banner from "../images/homeBanner.png";
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import image from "../images/beach.jpg";
 import FeaturedBlogCard from "./FeaturedBlogCard";
 import "../App.css";
 
@@ -20,7 +17,7 @@ const HomePage = () => {
             style={{
               position: "absolute",
               width: windowWidth + 1, // sets width to the width of the screen
-              height: window.innerHeight * 0.9, // sets height to  the screen
+              height: window.innerHeight * 0.85, // sets height to  the screen
               left: 0,
               justifyContent: "center",
               alignItems: "center",

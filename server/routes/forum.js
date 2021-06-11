@@ -16,7 +16,68 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          isFeatured: doc.data().isFeatured,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
+/**
+ * Retrieve forum post by id from collection
+ */
+ router.get("/get/:id", (req, res) => {
+  db.collection("forum").doc(req.params.id).get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.send({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          isFeatured: doc.data().isFeatured,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
+      }
+      else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    })
+});
+/**
+ * Retrieve featured forums from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const forumRef = db.collection("forum");
+  let temp = [];
+  forumRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            isFeatured: doc.data().isFeatured,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
+        }
       });
     })
     .then(() => {
@@ -35,8 +96,16 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        if (doc.topic === req.params.topic) {
-          temp.push(doc.data());
+        if (doc.data().topic === req.params.topic) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            isFeatured: doc.data().isFeatured,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -50,7 +119,23 @@ router.get("/", (req, res) => {
  * Request body includes all forum information
  */
 router.post("/create", async(req, res) => {
-  await db.collection("forum").doc(req.body.id).set(req.body);
+  const{
+    forum_id,
+    title,
+    content,
+    likes,
+    isFeatured,
+    topic
+  } = req.body;
+  const createdDate = admin.firestore.Timestamp.now()
+  await db.collection("forum").doc(forum_id).set({
+    title,
+    content,
+    likes,
+    isFeatured,
+    topic,
+    createdDate
+  });
 
   var user_data = db.collection("user").doc(req.body.user_id);
   var arrUnion = user_data.update({
@@ -66,8 +151,9 @@ router.post("/create", async(req, res) => {
  * Increments the likes field, and updates the forum post
  * Sends status 200 if successful, 404 otherwise
  */
-router.put("/like", async(req, res) => {
-  const { forum_id } = req.body;
+router.put("/like", (req, res) => {
+  const { forum_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("forum").doc(forum_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -76,8 +162,15 @@ router.put("/like", async(req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("forum").doc(forum_id)
     .update({
       likes: curr_likes,
@@ -138,7 +231,7 @@ router.get("/comments/get/:id", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({id: doc.id, ...doc.data()});
       });
     })
     .then(() => {
@@ -165,12 +258,13 @@ router.post("/comments/create/:id", async(req, res) => {
 });
 /**
  * Likes comment
- * Body is the comment id
+ * Body is the comment id and user id
  * @param id - the ID of the forum post being commented on
  * Sends 200 if like made succesffully
  */
-router.put("/comments/like/:id", (req, res) => {
-  const { comment_id } = req.body;
+router.put("/comments/like/:id", (req, res) => {  
+  const { comment_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -179,8 +273,15 @@ router.put("/comments/like/:id", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
       likes: curr_likes,
@@ -192,7 +293,6 @@ router.put("/comments/like/:id", (req, res) => {
       res.sendStatus(404);
     });
   });
-  res.sendStatus(200);
 });
 /**
  * Deletes a comment
