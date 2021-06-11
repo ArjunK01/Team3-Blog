@@ -41,7 +41,6 @@ const Product = ({ title, price, stock, description, isEdit }) => {
             className="add-to-cart-btn"
             onClick={() => {
               alert("some action");
-              // add product to cart BY PRODUCT ID
             }}
           >
             <AddShoppingCartIcon />
@@ -51,7 +50,6 @@ const Product = ({ title, price, stock, description, isEdit }) => {
               className="delete-product-btn"
               onClick={() => {
                 alert("some action");
-                // add product to cart BY PRODUCT ID
               }}
             >
               <DeleteIcon />

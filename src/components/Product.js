@@ -33,12 +33,10 @@ const Product = ({
   const [newImages, setNewImages] = useState(images);
   const [newDescription, setNewDescription] = useState(description);
 
-  // handle dialog open
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // handle dialog close
   const handleClose = () => {
     setOpen(false);
   };
@@ -70,7 +68,6 @@ const Product = ({
       getMerch();
     }, 200);
   };
-  // console.log({ price }, { stock }, { description });
 
   const { addItem } = useContext(CartContext);
   return (
@@ -82,23 +79,23 @@ const Product = ({
           ) : (
             <LocalMallIcon style={{ fontSize: "7rem" }} />
           )}
-          {/* {console.log({ images })} */}
+          {}
         </div>
         <div className="product-information">
-          {/* TITLE */}
+          {}
           <p className="product-name reset-padding">{title}</p>
-          {/* PRICE */}
+          {}
           <p className="product-price reset-padding">${price}</p>
-          {/* DESCRIPTION */}
+          {}
           <p className="product-desc reset-padding" style={{ color: "grey" }}>
             {description}
           </p>
-          {/* STOCK AVAILABLE */}
+          {}
           <div className="stock-container">
             <p className="product-stock reset-padding">
               {stock <= 0 ? (
                 <div style={{ color: "red" }}>
-                  {/* <strong style={{ color: "red" }}>Out of stock</strong> */}
+                  {}
                   Out of stock
                 </div>
               ) : (
@@ -113,19 +110,13 @@ const Product = ({
                 </div>
               )}
             </p>
-            {/* <p
-              className="product-stock reset-padding"
-              style={{ color: "grey" }}
-            >
-              &nbsp;remaining
-            </p> */}
+            {}
           </div>
         </div>
         <div className="bottom-actions">
           <div
             className="add-to-cart-btn"
             onClick={() => {
-              // add product to cart BY PRODUCT ID
               addItem(title, description, price, stock, images, productID);
             }}
           >
@@ -144,7 +135,6 @@ const Product = ({
               <div
                 className="delete-product-btn"
                 onClick={() => {
-                  // delete product BY PRODUCT ID
                   deleteProduct();
                 }}
               >
@@ -153,7 +143,6 @@ const Product = ({
               <div
                 className="add-to-cart-btn"
                 onClick={() => {
-                  // edit product BY PRODUCT ID
                   handleClickOpen();
                 }}
               >
@@ -174,70 +163,60 @@ const Product = ({
                 <DialogContentText>
                   Modify below details to edit this product.
                 </DialogContentText>
-                {/* INPUT -- PRODUCT TITLE/NAME */}
+                {}
                 <TextField
                   autoFocus
                   margin="dense"
                   id="name"
                   label="Title"
                   type="text"
-                  value={newTitle}
-                  // placeholder={title}
                   fullWidth
                   onChange={(e) => {
                     setNewTitle(e.target.value);
                   }}
                 />
-                {/* INPUT -- STOCK AVAILABLE */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="stock"
                   label="Stock available"
                   type="text"
                   value={newStock}
-                  // placeholder={stock}
                   fullWidth
                   onChange={(e) => {
                     setNewStock(e.target.value);
                   }}
                 />
-                {/* INPUT -- PRICE */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="price"
                   label="Price"
                   value={newPrice}
-                  // placeholder={price}
                   type="number"
                   fullWidth
                   onChange={(e) => {
                     setNewPrice(e.target.value);
                   }}
                 />
-                {/* INPUT -- IMAGES */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="images"
                   label="Image URL"
                   value={newImages}
-                  // placeholder={images}
                   type="text"
                   fullWidth
                   onChange={(e) => {
                     setNewImages(e.target.value);
                   }}
                 />
-                {/* INPUT -- DESCRIPTION */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="desc"
                   label="Description"
                   value={newDescription}
-                  // placeholder={description}
                   type="text"
                   fullWidth
                   onChange={(e) => {
@@ -251,20 +230,15 @@ const Product = ({
                 <Button
                   onClick={handleClose}
                   color="primary"
-                  // style={{ background: "#ff8b8b" }}
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={() => {
-                    // call createProduct() to database via axios
                     updateProduct();
-                    // refresh();
                     setTimeout(() => handleClose(), 200);
-                    // handleClose();
                   }}
                   color="primary"
-                  // style={{ background: "#6fbd6f" }}
                 >
                   Save Changes
                 </Button>

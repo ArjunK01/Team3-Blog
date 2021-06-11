@@ -26,10 +26,6 @@ const Shop = () => {
   }, []);
 
   const [viewToggle, setViewToggle] = useState(0);
-  // All Products = 0
-  // Most Popular = 1
-  // Apparel = 2
-  // Accessories = 3
 
   const [filterToggle, setFilterToggle] = useState(false);
   const [sortToggle, setSortToggle] = useState(false);
@@ -42,25 +38,18 @@ const Shop = () => {
       setSortToggle(true);
     }
   };
-  // Add Product Dialoge
   const [open, setOpen] = useState(false);
 
-  // handle dialog open
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // handle dialog close
   const handleClose = () => {
     setOpen(false);
   };
-  // ___________
-
-  // fields to be inputted into the axios create request
   const [newTitle, setNewTitle] = useState("");
   const [newStock, setNewStock] = useState(0);
   const [newPrice, setNewPrice] = useState(0);
-  // const [newIsVisible, setNewIsVisible] = useState(true);
   const [newImages, setNewImages] = useState("");
   const [newDescription, setNewDescription] = useState("");
 
@@ -80,10 +69,8 @@ const Shop = () => {
     setTimeout(() => getMerch(), 200);
   };
 
-  // force a refresh
   const refresh = () => {
     window.location.reload(false);
-    // getMerch();
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -108,18 +95,7 @@ const Shop = () => {
           />
           <div className="shop-header-filter-sort">
             <div className="shop-subheader-filter-btns">
-              {/* <Button
-                style={{
-                  background: "var(--light-gray)",
-                  marginRight: "1rem",
-                  boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
-                }}
-                onClick={() => {
-                  setBoth();
-                }}
-              >
-                Toggle All
-              </Button> */}
+              {}
               <Button
                 style={{
                   boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
@@ -132,14 +108,7 @@ const Shop = () => {
                 Filter in stock
               </Button>
 
-              {/* {filterToggle && (
-                <div className="sort-select">
-                  <select style={{ padding: "5px", textAlign: "center" }}>
-                    <option selected="selected">All Items</option>
-                    <option>Hats</option>
-                  </select>
-                </div>
-              )} */}
+              {}
 
               <Button
                 style={{ boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)" }}
@@ -149,23 +118,12 @@ const Shop = () => {
               >
                 Sort price
               </Button>
-              {/* {sortToggle && (
-                <div className="sort-select">
-                  <select style={{ padding: "5px" }}>
-                    <option selected="selected">Best Selling</option>
-                    <option>Alphabetically, A-Z</option>
-                    <option>Alphabetically, Z-A</option>
-                    <option>Price (low to high)</option>
-                    <option>Price (high to low)</option>
-                  </select>
-                </div>
-              )} */}
+              {}
             </div>
             {user && (
               <div className="admin-edit-buttons-container">
                 <Button
                   style={{
-                    // backgroundColor: "#ff8b8b",
                     backgroundColor: !isEdit ? "#ff8b8b" : "white",
                     color: !isEdit ? "white" : "black",
                     border: !isEdit ? "none" : "1px solid red",
@@ -202,7 +160,7 @@ const Shop = () => {
                 <DialogContentText>
                   Fill in below product details to create a new product.
                 </DialogContentText>
-                {/* INPUT -- PRODUCT TITLE/NAME */}
+                {}
                 <TextField
                   autoFocus
                   margin="dense"
@@ -216,9 +174,8 @@ const Shop = () => {
                     setNewTitle(e.target.value);
                   }}
                 />
-                {/* INPUT -- STOCK AVAILABLE */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="stock"
                   label="Stock available"
@@ -230,9 +187,8 @@ const Shop = () => {
                     setNewStock(e.target.value);
                   }}
                 />
-                {/* INPUT -- PRICE */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="price"
                   label="Price"
@@ -244,24 +200,10 @@ const Shop = () => {
                     setNewPrice(e.target.value);
                   }}
                 />
-                {/* INPUT -- IS_VISIBLE */}
-                {/* <FormControlLabel
-                  margin="dense"
-                  control={
-                    <Checkbox
-                      checked={newIsVisible}
-                      name="checkbox"
-                      color="primary"
-                      onChange={(e) => {
-                        setNewIsVisible(e.target.checked);
-                      }}
-                    />
-                  }
-                  label="Show in store?"
-                /> */}
-                {/* INPUT -- IMAGES */}
+                {}
+                {}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="images"
                   label="Image URL"
@@ -272,9 +214,8 @@ const Shop = () => {
                     setNewImages(e.target.value);
                   }}
                 />
-                {/* INPUT -- DESCRIPTION */}
+                {}
                 <TextField
-                  // autoFocus
                   margin="dense"
                   id="desc"
                   label="Description"
@@ -292,20 +233,15 @@ const Shop = () => {
                 <Button
                   onClick={handleClose}
                   color="primary"
-                  // style={{ background: "#ff8b8b" }}
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={() => {
-                    // call createProduct() to database via axios
                     createProduct();
-                    // refresh();
                     setTimeout(() => handleClose(), 200);
-                    // handleClose();
                   }}
                   color="primary"
-                  // style={{ background: "#6fbd6f" }}
                 >
                   Create
                 </Button>
@@ -318,15 +254,9 @@ const Shop = () => {
             )}
           </div>
         </div>
-        {/* {isEdit && (
-          <p
-            style={{ color: "red", display: "flex", justifyContent: "center" }}
-          >
-            Editing...
-          </p>
-        )} */}
+        {}
         <div className="shop-products-container">
-          {/* map through merch products from database */}
+          {}
           {merch &&
             merch.map((m) => {
               return (

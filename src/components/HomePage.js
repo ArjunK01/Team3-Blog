@@ -6,7 +6,6 @@ import { ApiContext } from "../context/ApiProvider";
 import { useContext, useState, useEffect } from "react";
 
 const HomePage = () => {
-  //Define the screen window width variable
   const windowWidth = window.innerWidth;
 
   const { blog } = useContext(ApiContext);
@@ -21,14 +20,14 @@ const HomePage = () => {
     <div style={{ height: 1600 }}>
       <Card>
         <div style={{ float: "center" }}>
-          {/* City image for the banner */}
+          {}
           <img
             src={banner}
             alt="City Street"
             style={{
               position: "absolute",
-              width: windowWidth + 1, // sets width to the width of the screen
-              height: window.innerHeight * 0.85, // sets height to  the screen
+              width: windowWidth + 1,
+              height: window.innerHeight * 0.85,
               left: 0,
               justifyContent: "center",
               alignItems: "center",
