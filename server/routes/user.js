@@ -72,7 +72,9 @@ router.get("/get/:id", async (req, res) => {
 
   //get forum posts
   for(let i = 0; i < user_data.forumPosts.length; i++){
-    let forumpost_data = await db.collection("forums").doc(user_data.forumPosts[i]).get()
+    console.log(user_data.forumPosts[i]);
+    let forumpost_data = await db.collection("forum").doc(user_data.forumPosts[i]).get()
+    console.log(forumpost_data);
     if(!forumpost_data.exists){
       user_data.forumPosts[i] = { id: null, user_id: "Deleted", content: "Deleted" }
     }
@@ -82,7 +84,7 @@ router.get("/get/:id", async (req, res) => {
   }
   //get liked forum posts
   for(let i = 0; i < user_data.forumLikes.length; i++){
-    let forumlike_data = await db.collection("forums").doc(user_data.forumLikes[i]).get()
+    let forumlike_data = await db.collection("forum").doc(user_data.forumLikes[i]).get()
     if(!forumlike_data.exists){
       user_data.forumLikes[i] = { id: null, content: "Deleted", createdDate: null, isFeatured: false, likes: [], title: "Deleted", topic: "Deleted" }
     }
@@ -94,7 +96,7 @@ router.get("/get/:id", async (req, res) => {
   for(let i = 0; i < user_data.forumComments.length; i++){
     let forum_id = user_data.forumComments[i].forum_id;
     let comment_id = user_data.forumComments[i].comment_id;
-    let forumcomment_data = await db.collection("forums").doc(forum_id).collection("comments").doc(comment_id).get();
+    let forumcomment_data = await db.collection("forum").doc(forum_id).collection("comments").doc(comment_id).get();
     if(!forumcomment_data.exists){
       user_data.forumComments[i] = { id: null, content: "Deleted", createdDate: null, isFeatured: false, likes: [], title: "Deleted", topic: "Deleted" }
     }
