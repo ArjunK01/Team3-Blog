@@ -13,6 +13,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { ApiContext } from "../context/ApiProvider";
 import { CartContext } from "../context/CartProvider";
+import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
 
 const Product = ({
   title,
@@ -22,6 +23,7 @@ const Product = ({
   description,
   isEdit,
   productID,
+  setAddedToCart,
 }) => {
   const { getMerch } = useContext(ApiContext);
 
@@ -42,6 +44,22 @@ const Product = ({
   const handleClose = () => {
     setOpen(false);
   };
+
+  const saveAnimation = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 900);
+  };
+
+  const deleteAnimation = () => {
+    setDeleted(true);
+    setTimeout(() => setDeleted(false), 200);
+  };
+
+  const cartAnimation = () => {
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 900);
+  };
+
   const deleteProduct = () => {
     axios({
       method: "delete",
@@ -50,7 +68,7 @@ const Product = ({
         merch_id: productID,
       },
     });
-    setTimeout(() => getMerch(), 200);
+    setTimeout(() => getMerch(), 300);
   };
   const updateProduct = async () => {
     await axios({
@@ -70,17 +88,30 @@ const Product = ({
       getMerch();
     }, 200);
   };
-  // console.log({ price }, { stock }, { description });
+
+  const [saved, setSaved] = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   const { addItem } = useContext(CartContext);
   return (
-    <div className="shop-product-card">
+    <div
+      className="shop-product-card"
+      style={{
+        backgroundColor:
+          saved || deleted
+            ? saved
+              ? "rgb(111, 189, 111, 0.44)"
+              : "rgb(255, 139, 139, 0.44)"
+            : "var(--light-gray)",
+        transition: "all 0.5s ease",
+      }}
+    >
       <div className="product-content">
         <div className="product-image">
           {images.length >= 5 ? (
             <img src={images} className="product-img-tag" />
           ) : (
-            <LocalMallIcon style={{ fontSize: "7rem" }} />
+            <LocalMallIcon style={{ fontSize: "7rem", color: "grey" }} />
           )}
           {/* {console.log({ images })} */}
         </div>
@@ -122,15 +153,24 @@ const Product = ({
           </div>
         </div>
         <div className="bottom-actions">
-          <div
-            className="add-to-cart-btn"
-            onClick={() => {
-              // add product to cart BY PRODUCT ID
-              addItem(title, description, price, stock, images, productID);
-            }}
-          >
-            <AddShoppingCartIcon />
-          </div>
+          {!isEdit &&
+            (stock >= 1 ? (
+              <div
+                className="add-to-cart-btn"
+                onClick={() => {
+                  // add product to cart BY PRODUCT ID
+                  addItem(title, description, price, stock, images, productID);
+                  setAddedToCart(cartAnimation);
+                }}
+              >
+                <AddShoppingCartIcon />
+              </div>
+            ) : (
+              // <RemoveShoppingCartIcon style={{ color: "grey" }} />
+              <p style={{ color: "grey", padding: "0", margin: "0" }}>
+                Unavailable
+              </p>
+            ))}
 
           {isEdit && (
             <div
@@ -145,6 +185,7 @@ const Product = ({
                 className="delete-product-btn"
                 onClick={() => {
                   // delete product BY PRODUCT ID
+                  deleteAnimation();
                   deleteProduct();
                 }}
               >
@@ -171,9 +212,7 @@ const Product = ({
               <DialogContent
                 style={{ display: "flex", flexDirection: "column" }}
               >
-                <DialogContentText>
-                  Modify below details to edit this product.
-                </DialogContentText>
+                <DialogContentText>Product ID: {productID}</DialogContentText>
                 {/* INPUT -- PRODUCT TITLE/NAME */}
                 <TextField
                   autoFocus
@@ -194,7 +233,7 @@ const Product = ({
                   margin="dense"
                   id="stock"
                   label="Stock available"
-                  type="text"
+                  type="number"
                   value={newStock}
                   // placeholder={stock}
                   fullWidth
@@ -261,6 +300,8 @@ const Product = ({
                     updateProduct();
                     // refresh();
                     setTimeout(() => handleClose(), 200);
+                    saveAnimation();
+
                     // handleClose();
                   }}
                   color="primary"

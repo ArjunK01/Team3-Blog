@@ -16,22 +16,30 @@ const Shop = () => {
   const { user } = useContext(AuthContext);
   const { merch, getMerch } = useContext(ApiContext);
   useEffect(() => {
-    merch.sort((a, b) => {
-      if (a.title > b.title) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
+    merch.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+
+    getMerch();
   }, []);
 
-  const [viewToggle, setViewToggle] = useState(0);
+  const SORT_MAP = {
+    Name: (a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0),
+    Rating: (a, b) => (a.rating > b.rating ? -1 : b.rating > a.rating ? 1 : 0),
+    Price: (a, b) =>
+      a.price_level > b.price_level
+        ? 1
+        : b.price_level > a.price_level
+        ? -1
+        : 0,
+  };
+  const SORT_NAMES = Object.keys(SORT_MAP);
+
+  // const [viewToggle, setViewToggle] = useState(0);
   // All Products = 0
   // Most Popular = 1
   // Apparel = 2
   // Accessories = 3
 
-  const [filterToggle, setFilterToggle] = useState(false);
+  const [filterToggle, setFilterToggle] = useState(true);
   const [sortToggle, setSortToggle] = useState(false);
   const setBoth = () => {
     if (filterToggle || sortToggle) {
@@ -42,6 +50,7 @@ const Shop = () => {
       setSortToggle(true);
     }
   };
+
   // Add Product Dialoge
   const [open, setOpen] = useState(false);
 
@@ -87,6 +96,7 @@ const Shop = () => {
   };
 
   const [isEdit, setIsEdit] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   return (
     <div>
@@ -124,12 +134,14 @@ const Shop = () => {
                 style={{
                   boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
                   marginRight: "0.5rem",
+                  background: !filterToggle ? "var(--dark-blue)" : "",
+                  color: !filterToggle ? "white" : "black",
                 }}
                 onClick={() => {
                   setFilterToggle(!filterToggle);
                 }}
               >
-                Filter in stock
+                {filterToggle ? "Filter in stock" : "Show all"}
               </Button>
 
               {/* {filterToggle && (
@@ -161,7 +173,7 @@ const Shop = () => {
                 </div>
               )} */}
             </div>
-            {user && (
+            {user && user.isAdmin && (
               <div className="admin-edit-buttons-container">
                 <Button
                   style={{
@@ -317,6 +329,18 @@ const Shop = () => {
               <p className="product-count">{merch.length} products available</p>
             )}
           </div>
+          <div className="cart-confirmation-container">
+            <h2
+              style={{
+                color: "#6fbd6f",
+                display: addedToCart ? "flex" : "none",
+                justifyContent: "center",
+                transition: "ease-in-out",
+              }}
+            >
+              Added to cart!
+            </h2>
+          </div>
         </div>
         {/* {isEdit && (
           <p
@@ -328,18 +352,45 @@ const Shop = () => {
         <div className="shop-products-container">
           {/* map through merch products from database */}
           {merch &&
-            merch.map((m) => {
-              return (
-                <Product
-                  title={m.title}
-                  price={m.price}
-                  stock={m.stock}
-                  images={m.images}
-                  description={m.description}
-                  isEdit={isEdit}
-                  productID={m.id}
-                />
-              );
+            merch.map((m, i = 1) => {
+              if (!filterToggle && m.stock >= 1) {
+                return (
+                  <Product
+                    title={m.title}
+                    price={m.price}
+                    stock={m.stock}
+                    images={m.images}
+                    description={m.description}
+                    isEdit={isEdit}
+                    productID={m.id}
+                    setAddedToCart={setAddedToCart}
+                  />
+                );
+              } else if (filterToggle) {
+                return (
+                  <Product
+                    title={m.title}
+                    price={m.price}
+                    stock={m.stock}
+                    images={m.images}
+                    description={m.description}
+                    isEdit={isEdit}
+                    productID={m.id}
+                    setAddedToCart={setAddedToCart}
+                  />
+                );
+              }
+              // return (
+              //   <Product
+              //     title={m.title}
+              //     price={m.price}
+              //     stock={m.stock}
+              //     images={m.images}
+              //     description={m.description}
+              //     isEdit={isEdit}
+              //     productID={m.id}
+              //   />
+              // );
             })}
         </div>
       </div>

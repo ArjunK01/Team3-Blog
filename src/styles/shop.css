@@ -76,7 +76,7 @@
 
 .shop-product-card {
   background: var(--light-gray);
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   height: 275px;
   width: 275px;
   display: flex;
@@ -89,14 +89,14 @@
   overflow: hidden;
 }
 
-.product-card:hover {
+.shop-product-card:hover {
   transform: scale(1.05);
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 .product-content {
-  padding-top: 15px;
+  /* padding-top: 10px; */
   width: 80%;
 }
 
@@ -139,7 +139,7 @@
 .bottom-actions {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .add-to-cart-btn {
@@ -157,6 +157,7 @@
 
 .add-to-cart-btn:hover {
   color: var(--dark-blue);
+  cursor: pointer;
   transition: all 0.25s ease;
 }
 
