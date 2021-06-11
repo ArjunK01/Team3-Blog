@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
+var admin = require("firebase-admin");
 
 //get all merch
 router.get("/getall", (req, res) => {
@@ -8,14 +9,16 @@ router.get("/getall", (req, res) => {
   db.collection("merch").get()
   .then((snapshot) => {
     snapshot.forEach((doc) => {
-      merchList.push({
-        id: doc.id,
-        title: doc.data().title,
-        price: doc.data().price,
-        description: doc.data().description,
-        images: doc.data().images,
-        stock: doc.data().stock
-      });
+      if(doc.data().isVisible == true){
+        merchList.push({
+          id: doc.id,
+          title: doc.data().title,
+          price: doc.data().price,
+          description: doc.data().description,
+          images: doc.data().images,
+          stock: doc.data().stock,
+        });
+      }
     });
     res.send(merchList)
   })
@@ -80,33 +83,38 @@ router.put("/edit", async (req, res) => {
 
 //decrease stock by 1 based off item purchased
 //return status (no info about merch items)
-router.put("/purchase", (req, res) => {
-  const { merch_id } = req.body;
-  let curr_stock = 0;
-  db.collection("merch").doc(merch_id).get()
-  .then((doc) => {
+router.put("/purchase", async (req, res) => {
+  const { user_id, merch } = req.body;
+  for(let i = 0; i < merch.length; i++){
+    let curr_stock = 0;
+    let merch_id = merch[i].merch_id;
+    let quant = merch[i].quantity;
+    var doc = await db.collection("merch").doc(merch_id).get()
     if (doc.exists) {
       curr_stock = doc.data().stock;
     }
     else {
       res.sendStatus(404);
     }
-    curr_stock = curr_stock-1;
+    curr_stock = curr_stock-quant;
 
     db.collection("merch").doc(merch_id)
     .update({
       stock: curr_stock,
     })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
+  }
+  var user_data = db.collection("user").doc(user_id);
+  user_data.get()
+  .then((doc) => {
+    var arrUnion = user_data.update({
+      purchasedMerch: admin.firestore.FieldValue.arrayUnion({
+        "time": admin.firestore.Timestamp.now(),
+        "purchase": merch,
+      })
     });
-
   })
-  .catch((error) => {
-    res.sendStatus(404);
+  .then(() => {
+    res.sendStatus(200);
   });
 });
 
@@ -114,7 +122,7 @@ router.put("/purchase", (req, res) => {
 //returns all remaining merch
 router.delete("/delete", async (req, res) => {
   const { merch_id } = req.body;
-  db.collection("merch").doc(merch_id).delete();
+  db.collection("merch").doc(merch_id).update({"isVisible": false});
 
   let merchList = [];
   db.collection("merch").get()
@@ -147,12 +155,15 @@ router.post("/create", async (req, res) => {
     stock,
   } = req.body;
 
+  var isVisible = true;
+
   await db.collection("merch").add({
     title,
     images,
     description,
     price,
     stock,
+    isVisible
   });
 
   let merchList = [];

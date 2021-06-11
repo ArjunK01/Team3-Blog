@@ -1,0 +1,36 @@
+.aboutContainer {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 70px;
+  overflow: hidden;
+}
+
+.aboutFormContainer {
+  min-width: 550px;
+  padding: 32px 32px;
+}
+
+.aboutHeroContainer {
+  flex-grow: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+.aboutHeroContainer img {
+  scale: 0.5;
+  width: 95%;
+  height: 100%;
+}
+
+.aboutBody {
+  font-size: 13px;
+  width: 70%;
+  color: var(--dark-green);
+  display: flex;
+  flex-direction: column;
+}
+
+.errorMessage {
+  font-size: 14px;
+  margin-bottom: 0;
+}

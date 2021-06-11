@@ -1,9 +1,55 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../styles/user-profile.css";
 import BlogPost from "./BlogPost";
 import FaceIcon from "@material-ui/icons/Face";
+import { useParams, useHistory } from "react-router-dom";
+import { ApiContext } from "../context/ApiProvider";
+import axios from "axios";
+import MerchItem from "./MerchItem";
+import Loading from "./Loading";
 
 const UserProfile = () => {
+  const { id } = useParams();
+  const { users, blog } = useContext(ApiContext);
+
+  const [current, setCurrent] = useState(null);
+  const [likedBlogs, setLikedBlogs] = useState([]);
+  const [purchased, setPurched] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(async () => {
+    setLoading(true);
+    let u = await axios.get("http://localhost:8000/user/get/" + id);
+    setCurrent(u.data);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    let temp = [];
+    blog &&
+      current &&
+      blog.forEach(b => {
+        console.log(b.likes);
+        if (b.likes && b.likes.includes(current.id)) {
+          temp.push(b);
+        }
+      });
+    console.log("Temp:", temp);
+    setLikedBlogs(temp);
+  }, [blog, current]);
+  useEffect(async () => {
+    let temp = [];
+    if (!current) return;
+    current.purchasedMerch.forEach(async m => {
+      temp.push({
+        id: m.purchase[0].merch_id.id,
+        title: m.purchase[0].merch_id.title
+      });
+    });
+    setPurched(temp);
+    console.log("MERCH:", temp);
+  }, [current]);
+
   return (
     <div className="container">
       <div className="profile-header">Profile</div>
@@ -19,50 +65,44 @@ const UserProfile = () => {
           {/* NAME FIELD */}
           <div className="name">
             <p className="reset-padding field-title">NAME&nbsp;</p>
-            <p className="reset-padding">Full Name</p>
+            <p className="reset-padding">{current && current.name}</p>
           </div>
           {/* HANDLE */}
           <div className="name">
             <p className="reset-padding field-title">HANDLE&nbsp;</p>
-            <p className="reset-padding">@user12345</p>
+            <p className="reset-padding">{current && current.handle}</p>
           </div>
           {/* BIRTHDAY FIELD */}
           <div className="birthday">
             <p className="reset-padding field-title">BIRTHDAY&nbsp;</p>
-            <p className="reset-padding">1/1/2000</p>
-          </div>
-          {/* LOCATION FIELD */}
-          <div className="location">
-            <p className="reset-padding field-title">LOCATION</p>
-            <p className="reset-padding">San Francisco, CA</p>
+            <p className="reset-padding">{current && current.birthday}</p>
           </div>
           {/* ABOUT FIELD */}
-          <div className="about">
-            <p className="reset-padding field-title">ABOUT</p>
-            <p className="reset-padding">I am a sample user</p>
-          </div>
         </div>
       </div>
 
       <div className="bottom-section">
         <div className="blog-posts-container">
           <div className="subheader">
-            <h2>Blog posts</h2>
+            <h2>Liked Blog posts</h2>
             <hr />
           </div>
           <div className="blog-content">
             {/* <p className="blog-post">example item</p> */}
-            <BlogPost />
+            {likedBlogs.length > 0 &&
+              likedBlogs.map(b => {
+                return <BlogPost b={b} />;
+              })}
           </div>
         </div>
+
         <div className="forum-posts-container">
           <div className="subheader">
-            <h2>Forum posts</h2>
+            <h2>Purchased Merch</h2>
             <hr />
           </div>
           <div className="forum-content">
-            {/* <p className="forum-post">example item</p> */}
-            <BlogPost />
+            {purchased.length > 0 && purchased.map(m => <MerchItem m={m} />)}
           </div>
         </div>
       </div>
