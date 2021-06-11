@@ -348,6 +348,11 @@
   margin-bottom: 6px;
 }
 
+.commentContainer:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .commentTop {
   display: flex;
   justify-content: space-between;
