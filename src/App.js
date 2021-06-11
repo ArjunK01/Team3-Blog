@@ -8,9 +8,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <ContextWrapper>
-        <Navigation />
-      </ContextWrapper>
+      <div style={{ minHeight: "91vh" }}>
+        <ContextWrapper>
+          <Navigation />
+        </ContextWrapper>
+      </div>
+
       <Footer />
     </div>
   );

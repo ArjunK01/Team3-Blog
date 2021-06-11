@@ -4,7 +4,7 @@
 
 .navWidth {
   display: flex;
-
+  max-width: 1260px;
   justify-content: space-between;
   margin: 0px auto;
   color: white;

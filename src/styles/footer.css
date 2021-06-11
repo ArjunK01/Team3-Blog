@@ -1,5 +1,8 @@
+.footerContainer {
+  background-color: var(--dark-blue);
+}
+
 .footer {
-  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -9,6 +12,8 @@
   display: flex;
   justify-content: space-between;
   padding: 16px 12px;
+  margin: 0px auto;
+  max-width: 1260px;
 }
 
 .footer a {
