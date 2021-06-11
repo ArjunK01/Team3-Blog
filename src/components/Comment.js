@@ -47,12 +47,14 @@ export const Comment = ({
     <div
       className="commentContainer"
       style={{ backgroundColor: i % 2 === 0 ? "#F3F4F6" : "white" }}
-      onClick={() =>
-        comment.user_id && history.push("/user/" + comment.user_id)
-      }
     >
       <div className="commentTop">
-        <div className="commentUser">
+        <div
+          className="commentUser"
+          onClick={() =>
+            comment.user_id && history.push("/user/" + comment.user_id)
+          }
+        >
           {author ? author.handle : "Author Not Found"}
         </div>
 

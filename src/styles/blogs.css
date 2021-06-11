@@ -348,7 +348,7 @@
   margin-bottom: 6px;
 }
 
-.commentContainer:hover {
+.commentUser:hover {
   cursor: pointer;
   text-decoration: underline;
 }
