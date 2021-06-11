@@ -35,6 +35,14 @@ const Product = ({
   const [newImages, setNewImages] = useState(images);
   const [newDescription, setNewDescription] = useState(description);
 
+  useEffect(() => {
+    setNewTitle(title);
+    setNewStock(stock);
+    setNewPrice(price);
+    setNewImages(images);
+    setNewDescription(description);
+  }, [isEdit]);
+
   // handle dialog open
   const handleClickOpen = () => {
     setOpen(true);
