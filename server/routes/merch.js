@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
+var admin = require("firebase-admin");
 
 //get all merch
 router.get("/getall", (req, res) => {
@@ -82,33 +83,38 @@ router.put("/edit", async (req, res) => {
 
 //decrease stock by 1 based off item purchased
 //return status (no info about merch items)
-router.put("/purchase", (req, res) => {
-  const { merch_id } = req.body;
-  let curr_stock = 0;
-  db.collection("merch").doc(merch_id).get()
-  .then((doc) => {
+router.put("/purchase", async (req, res) => {
+  const { user_id, merch } = req.body;
+  for(let i = 0; i < merch.length; i++){
+    let curr_stock = 0;
+    let merch_id = merch[i].merch_id;
+    let quant = merch[i].quantity;
+    var doc = await db.collection("merch").doc(merch_id).get()
     if (doc.exists) {
       curr_stock = doc.data().stock;
     }
     else {
       res.sendStatus(404);
     }
-    curr_stock = curr_stock-1;
+    curr_stock = curr_stock-quant;
 
     db.collection("merch").doc(merch_id)
     .update({
       stock: curr_stock,
     })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
+  }
+  var user_data = db.collection("user").doc(user_id);
+  user_data.get()
+  .then((doc) => {
+    var arrUnion = user_data.update({
+      purchasedMerch: admin.firestore.FieldValue.arrayUnion({
+        "time": admin.firestore.Timestamp.now(),
+        "purchase": merch,
+      })
     });
-
   })
-  .catch((error) => {
-    res.sendStatus(404);
+  .then(() => {
+    res.sendStatus(200);
   });
 });
 
