@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/cart.css";
 import productImage from "../images/product.jpg";
 import image from "../images/shirt.jpeg";

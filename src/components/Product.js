@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/shop.css";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
+import { CartContext } from "../context/CartProvider";
 
 const Product = ({
   title,
@@ -13,19 +14,20 @@ const Product = ({
   description,
   isEdit,
   productID,
-  getMerch,
+  getMerch
 }) => {
   const deleteProduct = () => {
     axios({
       method: "delete",
       url: "http://localhost:8000/merch/delete",
       data: {
-        merch_id: productID,
-      },
+        merch_id: productID
+      }
     });
     setTimeout(() => getMerch(), 200);
   };
 
+  const { addItem } = useContext(CartContext);
   return (
     <div className="product-card">
       <div className="product-content">
@@ -74,8 +76,8 @@ const Product = ({
           <div
             className="add-to-cart-btn"
             onClick={() => {
-              alert("some action");
               // add product to cart BY PRODUCT ID
+              addItem(title, description, price, stock, images, productID);
             }}
           >
             <AddShoppingCartIcon />

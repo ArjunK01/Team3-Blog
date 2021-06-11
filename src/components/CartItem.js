@@ -8,7 +8,7 @@ const CartItem = ({ item }) => {
   return (
     <div className="cartCard">
       <div className="cartImage">
-        <img src="https://premiumjoy.com/wp-content/uploads/kids-tshirt-back-200x200.jpg" />
+        <img src={item.images} />
       </div>
       <div className="cartInfo">
         <div className="itemTop">

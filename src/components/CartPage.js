@@ -1,15 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartProvider";
+import { AuthContext } from "../context/AuthProvider";
 import image from "../images/shirt.jpeg";
 import "../styles/cart.css";
 import CartItem from "./CartItem";
+import axios from "axios";
 
 const CartPage = () => {
-  const { cart } = useContext(CartContext);
-
+  const { cart, setCart } = useContext(CartContext);
+  const { user } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
   const [address, setAddress] = useState("");
   const [cc, setCC] = useState("");
+
+  const checkout = async () => {
+    if (cart.length === 0) return;
+    let merch = [];
+    cart.forEach(item => {
+      merch.push({ merch_id: item.id, quantity: 1 });
+    });
+    await axios({
+      method: "put",
+      url: "http://localhost:8000/merch/purchase",
+      headers: {},
+      data: {
+        user_id: user.id,
+        merch
+      }
+    });
+    setCart([]);
+  };
 
   useEffect(() => {
     setTotal(0);
@@ -47,7 +67,11 @@ const CartPage = () => {
             type="text"
             class="form-control authInput mb-2"
           />
-          <div className="checkoutBtn">Checkout</div>
+          {user && (
+            <div className="checkoutBtn" onClick={() => checkout()}>
+              Checkout
+            </div>
+          )}
         </div>
       </div>
     </div>
