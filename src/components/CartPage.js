@@ -33,7 +33,7 @@ const CartPage = () => {
 
   useEffect(() => {
     setTotal(0);
-    cart.forEach(item => setTotal(t => t + parseInt(item.price)));
+    cart.forEach(item => setTotal(t => t + parseFloat(item.price)));
   }, [cart]);
   return (
     <div className="cart">
