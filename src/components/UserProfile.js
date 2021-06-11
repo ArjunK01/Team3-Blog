@@ -16,6 +16,7 @@ const UserProfile = () => {
   const [current, setCurrent] = useState(null);
   const [likedBlogs, setLikedBlogs] = useState([]);
   const [purchased, setPurched] = useState([]);
+  const [merchList, setMerchList] = useState([]);
   const [forumPosts, setForumPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -43,10 +44,13 @@ const UserProfile = () => {
     let temp = [];
     if (!current) return;
     current.purchasedMerch.forEach(async m => {
-      temp.push({
-        id: m.purchase[0].merch_id.id,
-        title: m.purchase[0].merch_id.title
-      });
+      let t = m.time
+        .toString()
+        .substring(0, 10)
+        .split("-");
+      t.push(t.shift());
+
+      temp.push(m);
     });
     setPurched(temp);
     console.log("MERCH:", temp);
@@ -60,8 +64,6 @@ const UserProfile = () => {
       let res = await axios.get("http://localhost:8000/forum/get/" + m.id);
       setForumPosts(t => [...t, { id: res.data.id, title: res.data.title }]);
     });
-
-    console.log("Tmp:", temp);
   }, [current]);
 
   return (
