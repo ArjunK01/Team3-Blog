@@ -12,6 +12,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { ApiContext } from "../context/ApiProvider";
+import { CartContext } from "../context/CartProvider";
 
 const Product = ({
   title,
@@ -21,6 +22,8 @@ const Product = ({
   description,
   isEdit,
   productID,
+  getMerch
+
 }) => {
   const { getMerch } = useContext(ApiContext);
 
@@ -46,8 +49,8 @@ const Product = ({
       method: "delete",
       url: "http://localhost:8000/merch/delete",
       data: {
-        merch_id: productID,
-      },
+        merch_id: productID
+      }
     });
     setTimeout(() => getMerch(), 200);
   };
@@ -71,6 +74,7 @@ const Product = ({
   };
   // console.log({ price }, { stock }, { description });
 
+  const { addItem } = useContext(CartContext);
   return (
     <div className="shop-product-card">
       <div className="product-content">
@@ -122,8 +126,8 @@ const Product = ({
           <div
             className="add-to-cart-btn"
             onClick={() => {
-              alert("some action");
               // add product to cart BY PRODUCT ID
+              addItem(title, description, price, stock, images, productID);
             }}
           >
             <AddShoppingCartIcon />

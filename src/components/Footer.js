@@ -4,7 +4,10 @@ import React from "react";
 const Footer = () => {
   return (
     <div class="footer">
-      <section id="footer">
+      <div class="footerLeft">
+        Camille's Corner | camille@joinforge.co | PO Box 59
+      </div>
+      <div class="footerRight">
         <link
           href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
           rel="stylesheet"
@@ -28,7 +31,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../firebase");
+var admin = require("firebase-admin");
 
 router.get("/", (req, res) => {
   res.send("test");
@@ -16,7 +17,65 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
+      });
+    })
+    .then(() => {
+      res.send(temp);
+    });
+});
+/**
+ * Retrieve forum post by id from collection
+ */
+ router.get("/get/:id", (req, res) => {
+  db.collection("forum").doc(req.params.id).get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.send({
+          id: doc.id,
+          title: doc.data().title,
+          content: doc.data().content,
+          likes: doc.data().likes,
+          topic: doc.data().topic,
+          createdDate: doc.data().createdDate.toDate()
+        });
+      }
+      else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+    })
+});
+/**
+ * Retrieve featured forums from collection
+ * Sends as an array
+ */
+ router.get("/getfeatured", (req, res) => {
+  const forumRef = db.collection("forum");
+  let temp = [];
+  forumRef
+    .get()
+    .then((resp) => {
+      resp.forEach((doc) => {
+        if (doc.isFeatured) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
+        }
       });
     })
     .then(() => {
@@ -35,8 +94,15 @@ router.get("/", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        if (doc.topic === req.params.topic) {
-          temp.push(doc.data());
+        if (doc.data().topic === req.params.topic) {
+          temp.push({
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().content,
+            likes: doc.data().likes,
+            topic: doc.data().topic,
+            createdDate: doc.data().createdDate.toDate()
+          });
         }
       });
     })
@@ -50,7 +116,21 @@ router.get("/", (req, res) => {
  * Request body includes all forum information
  */
 router.post("/create", async(req, res) => {
-  await db.collection("forum").doc(req.body.id).set(req.body);
+  const createdDate = admin.firestore.Timestamp.now()
+  await db.collection("forum").doc(req.body.forum_id).set({
+    title: req.body.title,
+    content: req.body.content,
+    likes: req.body.likes,
+    topic: req.body.topic,
+    createdDate
+  }).catch((error) => {
+    res.sendStatus(404);
+  });
+
+  var user_data = db.collection("user").doc(req.body.user_id);
+  var arrUnion = user_data.update({
+    forumPosts: admin.firestore.FieldValue.arrayUnion(req.body.forum_id)
+  });
 
   res.sendStatus(200);
 });
@@ -62,7 +142,8 @@ router.post("/create", async(req, res) => {
  * Sends status 200 if successful, 404 otherwise
  */
 router.put("/like", (req, res) => {
-  const { forum_id } = req.body;
+  const { forum_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("forum").doc(forum_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -71,18 +152,40 @@ router.put("/like", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("forum").doc(forum_id)
     .update({
       likes: curr_likes,
     })
-    .then(() => {
-      res.sendStatus(200);
-    })
     .catch((error) => {
       res.sendStatus(404);
     });
+  });
+  var user_data = db.collection("user").doc(user_id);
+  user_data.get()
+  .then((doc) => {
+    var data = doc.data();
+    if(data.forumLikes.includes(blog_id)){
+      var arrUnion = user_data.update({
+        forumLikes: admin.firestore.FieldValue.arrayRemove(forum_id)
+      });
+    }
+    else{
+      var arrUnion = user_data.update({
+        forumLikes: admin.firestore.FieldValue.arrayUnion(forum_id)
+      });
+    }
+  })
+  .then(() => {
+    res.sendStatus(200);
   });
 });
 /**
@@ -118,7 +221,7 @@ router.get("/comments/get/:id", (req, res) => {
     .get()
     .then((resp) => {
       resp.forEach((doc) => {
-        temp.push(doc.data());
+        temp.push({id: doc.id, ...doc.data()});
       });
     })
     .then(() => {
@@ -132,18 +235,26 @@ router.get("/comments/get/:id", (req, res) => {
  * Sends 200 if comment made succesffully
  */
 router.post("/comments/create/:id", async(req, res) => {
-  await db.collection("forum").doc(req.params.id).collection("comments").push(req.body);
+  db.collection("forum").doc(req.params.id).collection("comments").add(req.body)
+  .then(docRef => {
+    console.log(docRef.id);
+    var user_data = db.collection("user").doc(req.body.user_id);
+    var arrUnion = user_data.update({
+      forumComments: admin.firestore.FieldValue.arrayUnion({"forum_id": req.params.id, "comment_id": docRef.id})
+    });
+  });
 
   res.sendStatus(200);
 });
 /**
  * Likes comment
- * Body is the comment id
+ * Body is the comment id and user id
  * @param id - the ID of the forum post being commented on
  * Sends 200 if like made succesffully
  */
 router.put("/comments/like/:id", (req, res) => {  
-  const { comment_id } = req.body;
+  const { comment_id, user_id } = req.body;
+  let curr_likes = [];
   db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id).get()
   .then((doc) => {
     if (doc.exists) {
@@ -152,8 +263,15 @@ router.put("/comments/like/:id", (req, res) => {
     else {
       res.sendStatus(404);
     }
-    curr_likes = curr_likes+1;
-
+    let init_length = curr_likes.length;
+    curr_likes.forEach((like, index, object) => {
+      if (like === user_id) {
+        object.splice(index, 1);
+      }
+    });
+    if (curr_likes.length === init_length) {
+      curr_likes.push(user_id)
+    }
     db.collection("forum").doc(req.params.id).collection("comments").doc(comment_id)
     .update({
       likes: curr_likes,
@@ -165,7 +283,6 @@ router.put("/comments/like/:id", (req, res) => {
       res.sendStatus(404);
     });
   });
-  res.sendStatus(200);
 });
 /**
  * Deletes a comment
