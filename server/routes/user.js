@@ -39,6 +39,7 @@ router.get("/get/:id", async (req, res) => {
   //get merch data
   for(let i = 0; i < user_data.purchasedMerch.length; i++){
     let merch_list = user_data.purchasedMerch[i];
+    user_data.purchasedMerch[i].time = user_data.purchasedMerch[i].time.toDate();
     for(let j = 0; j < merch_list.purchase.length; j++){
       let merch_id = merch_list.purchase[j].merch_id;
       let merch_data = await db.collection("merch").doc(merch_id).get()
