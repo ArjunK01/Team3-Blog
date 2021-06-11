@@ -9,10 +9,23 @@ const CartContext = createContext();
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
+  const addItem = (title, description, price, stock, images, id) => {
+    let temp = [...cart];
+    temp.push({ title, description, stock, price, images, id });
+    setCart(temp);
+  };
+
+  const deleteItem = id => {
+    let temp = [...cart];
+    temp = temp.filter(item => item.id !== id);
+    setCart(temp);
+  };
+
   useEffect(() => {
     let temp = [
       {
         price: 40,
+        id: 1,
         stock: 50,
         title: "Shirt",
         description: "Description",
@@ -22,6 +35,7 @@ const CartProvider = ({ children }) => {
       {
         price: 43,
         stock: 100,
+        id: 2,
         title: "new shirt",
         description: "Description",
         images:
@@ -29,6 +43,7 @@ const CartProvider = ({ children }) => {
       },
       {
         price: 2,
+        id: 3,
         stock: 1000,
         title: "Gucci Shirt",
         description: "Description",
@@ -42,7 +57,9 @@ const CartProvider = ({ children }) => {
     <CartContext.Provider
       value={{
         cart,
-        setCart
+        setCart,
+        addItem,
+        deleteItem
       }}
     >
       {children}
