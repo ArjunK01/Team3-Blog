@@ -49,7 +49,7 @@ router.get("/get/:id", async (req, res) => {
   //get liked blog posts
   for(let i = 0; i < user_data.likedBlogPosts.length; i++){
     let bloglike_data = await db.collection("blogs").doc(user_data.likedBlogPosts[i]).get()
-    if(bloglike_data == undefined){
+    if(!bloglike_data.exists){
       user_data.likedBlogPosts[i] = { id: null, city: "Deleted", content: "Deleted", createdDate: null, image: "Deleted", isFeatured: false, likes: [], title: "Deleted" }
     }
     else{
@@ -61,7 +61,7 @@ router.get("/get/:id", async (req, res) => {
     let blog_id = user_data.blogComments[i].blog_id;
     let comment_id = user_data.blogComments[i].comment_id;
     let blogcomment_data = await db.collection("blogs").doc(blog_id).collection("comments").doc(comment_id).get();
-    if(blogcomment_data == undefined){
+    if(!blogcomment_data.exists){
       user_data.blogComments[i] = { id: null, user_id: "Deleted", content: "Deleted" }
     }
     else{
@@ -72,7 +72,7 @@ router.get("/get/:id", async (req, res) => {
   //get forum posts
   for(let i = 0; i < user_data.forumPosts.length; i++){
     let forumpost_data = await db.collection("forums").doc(user_data.forumPosts[i]).get()
-    if(forumpost_data == undefined){
+    if(!forumpost_data.exists){
       user_data.forumPosts[i] = { id: null, user_id: "Deleted", content: "Deleted" }
     }
     else{
@@ -82,7 +82,7 @@ router.get("/get/:id", async (req, res) => {
   //get liked forum posts
   for(let i = 0; i < user_data.forumLikes.length; i++){
     let forumlike_data = await db.collection("forums").doc(user_data.forumLikes[i]).get()
-    if(forumlike_data == undefined){
+    if(!forumlike_data.exists){
       user_data.forumLikes[i] = { id: null, content: "Deleted", createdDate: null, isFeatured: false, likes: [], title: "Deleted", topic: "Deleted" }
     }
     else{
@@ -94,7 +94,7 @@ router.get("/get/:id", async (req, res) => {
     let forum_id = user_data.forumComments[i].forum_id;
     let comment_id = user_data.forumComments[i].comment_id;
     let forumcomment_data = await db.collection("forums").doc(forum_id).collection("comments").doc(comment_id).get();
-    if(forumcomment_data == undefined){
+    if(!forumcomment_data.exists){
       user_data.forumComments[i] = { id: null, content: "Deleted", createdDate: null, isFeatured: false, likes: [], title: "Deleted", topic: "Deleted" }
     }
     else{
