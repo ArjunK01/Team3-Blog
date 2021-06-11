@@ -107,51 +107,64 @@ const Product = ({
       }}
     >
       <div className="product-content">
-        <div className="product-image">
-          {images.length >= 5 ? (
-            <img src={images} className="product-img-tag" />
-          ) : (
-            <LocalMallIcon style={{ fontSize: "7rem", color: "grey" }} />
-          )}
-          {/* {console.log({ images })} */}
-        </div>
-        <div className="product-information">
-          {/* TITLE */}
-          <p className="product-name reset-padding">{title}</p>
-          {/* PRICE */}
-          <p className="product-price reset-padding">${price}</p>
-          {/* DESCRIPTION */}
-          <p className="product-desc reset-padding" style={{ color: "grey" }}>
-            {description}
-          </p>
-          {/* STOCK AVAILABLE */}
-          <div className="stock-container">
-            <p className="product-stock reset-padding">
-              {stock <= 0 ? (
-                <div style={{ color: "red" }}>
-                  {/* <strong style={{ color: "red" }}>Out of stock</strong> */}
-                  Out of stock
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <strong>{stock}</strong>
-                  <p
-                    className="product-stock reset-padding"
-                    style={{ color: "grey" }}
-                  >
-                    &nbsp;remaining
-                  </p>
-                </div>
-              )}
+        <div className="topSection">
+          <div className="product-image">
+            {images.length >= 5 ? (
+              <img src={images} className="product-img-tag" />
+            ) : (
+              <LocalMallIcon style={{ fontSize: "7rem", color: "grey" }} />
+            )}
+            {/* {console.log({ images })} */}
+          </div>
+          <div className="product-information">
+            {/* TITLE */}
+            {/* {title.length <= 0 ? ( */}
+            <p className="product-name reset-padding">{title}</p>
+            {/* ) : (
+            <p
+              className="product-name reset-padding"
+              style={{ fontStyle: "italic", color: "grey" }}
+            >
+              empty title
             </p>
-            {/* <p
+          )} */}
+            {/* PRICE */}
+            <p className="product-price reset-padding">${price}</p>
+            {/* DESCRIPTION */}
+            <p className="product-desc reset-padding" style={{ color: "grey" }}>
+              {description}
+            </p>
+            {/* STOCK AVAILABLE */}
+            <div className="stock-container">
+              <p className="product-stock reset-padding">
+                {stock <= 0 ? (
+                  <div style={{ color: "red" }}>
+                    {/* <strong style={{ color: "red" }}>Out of stock</strong> */}
+                    Out of stock
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <strong>{stock}</strong>
+                    <p
+                      className="product-stock reset-padding"
+                      style={{ color: "grey" }}
+                    >
+                      &nbsp;remaining
+                    </p>
+                  </div>
+                )}
+              </p>
+              {/* <p
               className="product-stock reset-padding"
               style={{ color: "grey" }}
             >
               &nbsp;remaining
             </p> */}
+            </div>
           </div>
         </div>
+      </div>
+      <div className="bottomSection">
         <div className="bottom-actions">
           {!isEdit &&
             (stock >= 1 ? (
