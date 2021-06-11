@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <div style={{ minHeight: "91vh" }}>
+      <div style={{ minHeight: "95vh" }}>
         <ContextWrapper>
           <Navigation />
         </ContextWrapper>
