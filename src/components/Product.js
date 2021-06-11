@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/shop.css";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import DeleteIcon from "@material-ui/icons/Delete";
+import axios from "axios";
 
-const Product = ({ title, price, stock, description, isEdit }) => {
+const Product = ({
+  title,
+  price,
+  stock,
+  images,
+  description,
+  isEdit,
+  productID,
+  getMerch,
+}) => {
+  const deleteProduct = () => {
+    axios({
+      method: "delete",
+      url: "http://localhost:8000/merch/delete",
+      data: {
+        merch_id: productID,
+      },
+    });
+    setTimeout(() => getMerch(), 200);
+  };
+
   return (
     <div className="product-card">
       <div className="product-content">
         <div className="product-image">
-          <LocalMallIcon style={{ fontSize: "7rem" }} />
+          {/* <LocalMallIcon style={{ fontSize: "7rem" }} /> */}
+          <img src={images} className="product-img-tag" />
+          {/* {console.log({ images })} */}
         </div>
         <div className="product-information">
           {/* TITLE */}
@@ -23,14 +46,28 @@ const Product = ({ title, price, stock, description, isEdit }) => {
           {/* STOCK AVAILABLE */}
           <div className="stock-container">
             <p className="product-stock reset-padding">
-              <strong>{stock}</strong>
+              {stock === 0 ? (
+                <div>
+                  <strong style={{ color: "red" }}>Out of stock</strong>
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <strong>{stock}</strong>
+                  <p
+                    className="product-stock reset-padding"
+                    style={{ color: "grey" }}
+                  >
+                    &nbsp;remaining
+                  </p>
+                </div>
+              )}
             </p>
-            <p
+            {/* <p
               className="product-stock reset-padding"
               style={{ color: "grey" }}
             >
               &nbsp;remaining
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="bottom-actions">
@@ -47,8 +84,8 @@ const Product = ({ title, price, stock, description, isEdit }) => {
             <div
               className="delete-product-btn"
               onClick={() => {
-                alert("some action");
-                // add product to cart BY PRODUCT ID
+                // delete product BY PRODUCT ID
+                deleteProduct();
               }}
             >
               <DeleteIcon />

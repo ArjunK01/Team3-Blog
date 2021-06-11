@@ -13,6 +13,24 @@ import { AuthContext } from "../context/AuthProvider";
 import { ApiContext } from "../context/ApiProvider";
 
 const Shop = () => {
+  const { user } = useContext(AuthContext);
+  const { merch, getMerch } = useContext(ApiContext);
+  useEffect(() => {
+    merch.sort((a, b) => {
+      if (a.title > b.title) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  }, []);
+
+  const [viewToggle, setViewToggle] = useState(0);
+  // All Products = 0
+  // Most Popular = 1
+  // Apparel = 2
+  // Accessories = 3
+
   const [filterToggle, setFilterToggle] = useState(false);
   const [sortToggle, setSortToggle] = useState(false);
   const setBoth = () => {
@@ -37,8 +55,6 @@ const Shop = () => {
     setOpen(false);
   };
   // ___________
-  const { user } = useContext(AuthContext);
-  const { merch, getMerch } = useContext(ApiContext);
 
   // fields to be inputted into the axios create request
   const [newTitle, setNewTitle] = useState("");
@@ -61,12 +77,13 @@ const Shop = () => {
         description: newDescription,
       },
     });
+    setTimeout(() => getMerch(), 200);
   };
 
   // force a refresh
   const refresh = () => {
-    // window.location.reload(false);
-    getMerch();
+    window.location.reload(false);
+    // getMerch();
   };
 
   const [isEdit, setIsEdit] = useState(false);
@@ -82,232 +99,248 @@ const Shop = () => {
             <Button style={{ fontSize: "1.3rem" }}>Apparel</Button>
             <Button style={{ fontSize: "1.3rem" }}>Accessories</Button>
           </div>
-          <hr />
+          <hr
+            style={{
+              height: "3px",
+              backgroundColor: isEdit ? "red" : "black",
+              transition: "all 0.25s ease",
+            }}
+          />
           <div className="header-filter-sort">
-            <Button
-              style={{
-                background: "var(--light-gray)",
-                marginRight: "1rem",
-                boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
-              }}
-              onClick={() => {
-                setBoth();
-              }}
-            >
-              Toggle All
-            </Button>
-            <Button
-              style={{
-                boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
-                marginRight: "0.5rem",
-              }}
-              onClick={() => {
-                setFilterToggle(!filterToggle);
-              }}
-            >
-              Filter
-            </Button>
-
-            {filterToggle && (
-              <div className="sort-select">
-                <select style={{ padding: "5px", textAlign: "center" }}>
-                  <option selected="selected">All Items</option>
-                  <option>Hats</option>
-                </select>
-              </div>
-            )}
-
-            <Button
-              style={{ boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)" }}
-              onClick={() => {
-                setSortToggle(!sortToggle);
-              }}
-            >
-              Sort
-            </Button>
-            {sortToggle && (
-              <div className="sort-select">
-                <select style={{ padding: "5px" }}>
-                  <option selected="selected">Best Selling</option>
-                  <option>Alphabetically, A-Z</option>
-                  <option>Alphabetically, Z-A</option>
-                  <option>Price (low to high)</option>
-                  <option>Price (high to low)</option>
-                </select>
-              </div>
-            )}
-          </div>
-          {user && (
-            <div className="admin-edit-buttons-container">
+            <div className="shop-subheader-filter-btns">
               <Button
                 style={{
-                  background: "#ff8b8b",
-                  color: "white",
+                  background: "var(--light-gray)",
                   marginRight: "1rem",
                   boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
                 }}
                 onClick={() => {
-                  setIsEdit(!isEdit);
+                  setBoth();
                 }}
               >
-                Edit
+                Toggle All
               </Button>
               <Button
-                onClick={handleClickOpen}
                 style={{
-                  background: "#6fbd6f",
-                  color: "white",
                   boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
+                  marginRight: "0.5rem",
                 }}
-              >
-                Add
-              </Button>
-            </div>
-          )}
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title">New Product</DialogTitle>
-            <DialogContent style={{ display: "flex", flexDirection: "column" }}>
-              <DialogContentText>
-                Fill in below product details to create a new product.
-              </DialogContentText>
-              {/* INPUT -- PRODUCT TITLE/NAME */}
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Title"
-                type="text"
-                placeholder="Ex. T-Shirt"
-                required="true"
-                fullWidth
-                onChange={(e) => {
-                  setNewTitle(e.target.value);
-                }}
-              />
-              {/* INPUT -- STOCK AVAILABLE */}
-              <TextField
-                // autoFocus
-                margin="dense"
-                id="stock"
-                label="Stock available"
-                type="text"
-                placeholder="Ex. 15"
-                required="number"
-                fullWidth
-                onChange={(e) => {
-                  setNewStock(e.target.value);
-                }}
-              />
-              {/* INPUT -- PRICE */}
-              <TextField
-                // autoFocus
-                margin="dense"
-                id="price"
-                label="Price"
-                placeholder="Ex. $xx.xx"
-                type="number"
-                required="true"
-                fullWidth
-                onChange={(e) => {
-                  setNewPrice(e.target.value);
-                }}
-              />
-              {/* INPUT -- IS_VISIBLE */}
-              <FormControlLabel
-                margin="dense"
-                control={
-                  <Checkbox
-                    checked={newIsVisible}
-                    name="checkbox"
-                    color="primary"
-                    onChange={(e) => {
-                      setNewIsVisible(e.target.checked);
-                    }}
-                  />
-                }
-                label="Show in store?"
-              />
-              {/* INPUT -- IMAGES */}
-              <TextField
-                // autoFocus
-                margin="dense"
-                id="images"
-                label="Image URL"
-                placeholder="Ex. http://...."
-                type="text"
-                fullWidth
-                onChange={(e) => {
-                  setNewImages(e.target.value);
-                }}
-              />
-              {/* INPUT -- DESCRIPTION */}
-              <TextField
-                // autoFocus
-                margin="dense"
-                id="desc"
-                label="Description"
-                placeholder="Ex. 100% cotton"
-                type="text"
-                fullWidth
-                onChange={(e) => {
-                  setNewDescription(e.target.value);
-                }}
-              />
-            </DialogContent>
-            <DialogActions
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <Button
-                onClick={handleClose}
-                color="primary"
-                // style={{ background: "#ff8b8b" }}
-              >
-                Cancel
-              </Button>
-              <Button
                 onClick={() => {
-                  // call createProduct() to database via axios
-                  createProduct();
-                  // refresh();
-                  handleClose();
+                  setFilterToggle(!filterToggle);
                 }}
-                color="primary"
-                // style={{ background: "#6fbd6f" }}
               >
-                Create
+                Filter
               </Button>
-            </DialogActions>
-          </Dialog>
-          {/* </div> */}
-          {/* )} */}
-          <p className="product-count">{merch.length} total products</p>
+
+              {filterToggle && (
+                <div className="sort-select">
+                  <select style={{ padding: "5px", textAlign: "center" }}>
+                    <option selected="selected">All Items</option>
+                    <option>Hats</option>
+                  </select>
+                </div>
+              )}
+
+              <Button
+                style={{ boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)" }}
+                onClick={() => {
+                  setSortToggle(!sortToggle);
+                }}
+              >
+                Sort
+              </Button>
+              {sortToggle && (
+                <div className="sort-select">
+                  <select style={{ padding: "5px" }}>
+                    <option selected="selected">Best Selling</option>
+                    <option>Alphabetically, A-Z</option>
+                    <option>Alphabetically, Z-A</option>
+                    <option>Price (low to high)</option>
+                    <option>Price (high to low)</option>
+                  </select>
+                </div>
+              )}
+            </div>
+            {user && (
+              <div className="admin-edit-buttons-container">
+                <Button
+                  style={{
+                    // backgroundColor: "#ff8b8b",
+                    backgroundColor: !isEdit ? "#ff8b8b" : "white",
+                    color: !isEdit ? "white" : "black",
+                    border: !isEdit ? "none" : "1px solid red",
+                    marginRight: "1rem",
+                    boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
+                  }}
+                  onClick={() => {
+                    setIsEdit(!isEdit);
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={handleClickOpen}
+                  style={{
+                    background: "#6fbd6f",
+                    color: "white",
+                    boxShadow: "0 2px 3px 0 rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  Add
+                </Button>
+              </div>
+            )}
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">New Product</DialogTitle>
+              <DialogContent
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <DialogContentText>
+                  Fill in below product details to create a new product.
+                </DialogContentText>
+                {/* INPUT -- PRODUCT TITLE/NAME */}
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Title"
+                  type="text"
+                  placeholder="Ex. T-Shirt"
+                  required="true"
+                  fullWidth
+                  onChange={(e) => {
+                    setNewTitle(e.target.value);
+                  }}
+                />
+                {/* INPUT -- STOCK AVAILABLE */}
+                <TextField
+                  // autoFocus
+                  margin="dense"
+                  id="stock"
+                  label="Stock available"
+                  type="text"
+                  placeholder="Ex. 15"
+                  required="number"
+                  fullWidth
+                  onChange={(e) => {
+                    setNewStock(e.target.value);
+                  }}
+                />
+                {/* INPUT -- PRICE */}
+                <TextField
+                  // autoFocus
+                  margin="dense"
+                  id="price"
+                  label="Price"
+                  placeholder="Ex. $xx.xx"
+                  type="number"
+                  required="true"
+                  fullWidth
+                  onChange={(e) => {
+                    setNewPrice(e.target.value);
+                  }}
+                />
+                {/* INPUT -- IS_VISIBLE */}
+                <FormControlLabel
+                  margin="dense"
+                  control={
+                    <Checkbox
+                      checked={newIsVisible}
+                      name="checkbox"
+                      color="primary"
+                      onChange={(e) => {
+                        setNewIsVisible(e.target.checked);
+                      }}
+                    />
+                  }
+                  label="Show in store?"
+                />
+                {/* INPUT -- IMAGES */}
+                <TextField
+                  // autoFocus
+                  margin="dense"
+                  id="images"
+                  label="Image URL"
+                  placeholder="Ex. http://...."
+                  type="text"
+                  fullWidth
+                  onChange={(e) => {
+                    setNewImages(e.target.value);
+                  }}
+                />
+                {/* INPUT -- DESCRIPTION */}
+                <TextField
+                  // autoFocus
+                  margin="dense"
+                  id="desc"
+                  label="Description"
+                  placeholder="Ex. 100% cotton"
+                  type="text"
+                  fullWidth
+                  onChange={(e) => {
+                    setNewDescription(e.target.value);
+                  }}
+                />
+              </DialogContent>
+              <DialogActions
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  onClick={handleClose}
+                  color="primary"
+                  // style={{ background: "#ff8b8b" }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    // call createProduct() to database via axios
+                    createProduct();
+                    // refresh();
+                    handleClose();
+                  }}
+                  color="primary"
+                  // style={{ background: "#6fbd6f" }}
+                >
+                  Create
+                </Button>
+              </DialogActions>
+            </Dialog>
+            {merch.length === 1 ? (
+              <p className="product-count">{merch.length} product available</p>
+            ) : (
+              <p className="product-count">{merch.length} products available</p>
+            )}
+          </div>
         </div>
+        {/* {isEdit && (
+          <p
+            style={{ color: "red", display: "flex", justifyContent: "center" }}
+          >
+            Editing...
+          </p>
+        )} */}
         <div className="products-container">
           {/* map through merch products from database */}
           {merch &&
             merch.map((m) => {
-              // console.log(m.title, m.price, m.stock, m.description);
               return (
                 <Product
                   title={m.title}
                   price={m.price}
                   stock={m.stock}
+                  images={m.images}
                   description={m.description}
                   isEdit={isEdit}
+                  productID={m.id}
+                  getMerch={getMerch}
                 />
               );
             })}
-          {/* <Product /> */}
-          {/* <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product />
-          <Product /> */}
         </div>
       </div>
     </div>
